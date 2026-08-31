@@ -43,6 +43,7 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/interpolation.py` | Interpolation | Barycentric Lagrange, divided differences, cubic splines, Chebyshev nodes |
 | `calccode/eigen.py` | Eigenvalues | Power iteration, inverse iteration with shift, deflation |
 | `calccode/orthogonal.py` | Orthogonalization | Gram-Schmidt both ways, Householder QR, Jacobi SVD, pseudoinverse, least squares |
+| `calccode/vector_calculus.py` | Vector calculus | Double and triple integrals, line and surface integrals, Green, divergence, and Stokes checkers, Lagrange multipliers |
 
 Each module has a matching file in `notes/` with study notes on what the code shows and where it breaks. [docs/modules.md](docs/modules.md) maps every module to its note, test file, and exercise. For a topic-by-topic checklist against a Calculus I/II syllabus, see [docs/study-guide.md](docs/study-guide.md).
 

@@ -1,6 +1,6 @@
 # Study guide
 
-A checklist mapping standard Calculus I and II topics to the code, notes, and exercises in this repo. The study loop: read the note, run the module, do the exercise, compare against the reference in `calccode/`.
+A checklist mapping standard Calculus I, II, and III topics to the code, notes, and exercises in this repo. The study loop: read the note, run the module, do the exercise, compare against the reference in `calccode/`.
 
 ## Calculus I and II
 
@@ -25,6 +25,17 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | Volumes of revolution (disk, shell) | `calccode/applications.py` | `notes/20-applications.md` | `exercises/ex_applications.py` |
 | Series convergence | `calccode/convergence.py` | `notes/22-series-convergence.md` | `exercises/ex_series.py` |
 | Taylor polynomials | `calccode/series.py` | `notes/08-series.md` | `exercises/ex_series.py` |
+
+## Calculus III
+
+| Topic | Module | Note | Exercise |
+| --- | --- | --- | --- |
+| Partial derivatives, gradient, Jacobian, Hessian | `calccode/multivar.py` | `notes/13-multivariable.md` | `exercises/ex_multivar.py` |
+| Double and triple integrals (rectangular and bounded by curves) | `calccode/vector_calculus.py` | `notes/30-vector-calculus.md` | none yet |
+| Line integrals (scalar and work) | `calccode/vector_calculus.py` | `notes/30-vector-calculus.md` | none yet |
+| Surface integrals and surface area | `calccode/vector_calculus.py` | `notes/30-vector-calculus.md` | none yet |
+| Green's, divergence, and Stokes' theorems | `calccode/vector_calculus.py` (both-sides checkers) | `notes/30-vector-calculus.md` | none yet |
+| Lagrange multipliers | `calccode/vector_calculus.py` | `notes/30-vector-calculus.md` | none yet |
 
 ## Beyond calculus
 
