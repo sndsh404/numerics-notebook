@@ -54,6 +54,56 @@ def test_constant_multiple_both_orders():
     check_antiderivative(Mul(Cos(x), Const(2.5)), -3.0, 3.0)
 
 
+def test_by_parts_x_exp():
+    # int(x e^x) = x e^x - e^x
+    antiderivative = integrate(Mul(x, Exp(x)))
+    assert abs(diff(antiderivative).eval(1.0) - math.e) < 1e-9
+    check_antiderivative(Mul(x, Exp(x)), -2.0, 2.0)
+
+
+def test_by_parts_x_sin_cos():
+    # int(x sin x) = sin x - x cos x; int(x cos x) = cos x + x sin x
+    check_antiderivative(Mul(x, Sin(x)), -3.0, 3.0)
+    check_antiderivative(Mul(x, Cos(x)), -3.0, 3.0)
+
+
+def test_by_parts_either_factor_order():
+    check_antiderivative(Mul(Exp(x), x), -2.0, 2.0)
+    check_antiderivative(Mul(Sin(x), x), -3.0, 3.0)
+
+
+def test_by_parts_constant_multiples():
+    check_antiderivative(Mul(Const(3.0), Mul(x, Exp(x))), -2.0, 2.0)
+    check_antiderivative(Mul(Mul(x, Cos(x)), Const(-2.0)), -3.0, 3.0)
+
+
+def test_by_parts_log():
+    # int(ln x) = x ln x - x, via the 1 * ln(x) trick
+    antiderivative = integrate(Log(x))
+    assert abs(diff(antiderivative).eval(2.0) - math.log(2.0)) < 1e-9
+    check_antiderivative(Log(x), 0.5, 4.0)
+    check_antiderivative(Mul(Const(5.0), Log(x)), 0.5, 4.0)
+
+
+def test_by_parts_still_refuses_off_pattern():
+    with pytest.raises(NotImplementedError):
+        integrate(Mul(x, Log(x)))  # x ln x is outside the pattern set
+    with pytest.raises(NotImplementedError):
+        integrate(Mul(Pow(x, Const(2.0)), Exp(x)))  # x^2 e^x needs parts twice
+
+
+def test_definite_integral_x_exp():
+    # int_0^1 x e^x dx = [x e^x - e^x]_0^1 = 1
+    value = definite_integral(Mul(x, Exp(x)), 0.0, 1.0)
+    assert abs(value - 1.0) < 1e-12
+
+
+def test_definite_integral_log():
+    # int_1^e ln x dx = [x ln x - x]_1^e = 1
+    value = definite_integral(Log(x), 1.0, math.e)
+    assert abs(value - 1.0) < 1e-12
+
+
 def test_definite_integral_of_x_squared():
     value = definite_integral(Pow(x, Const(2.0)), 0.0, 1.0)
     assert abs(value - 1.0 / 3.0) < 1e-12
