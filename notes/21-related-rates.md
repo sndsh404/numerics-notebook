@@ -1,0 +1,9 @@
+# 21 Related Rates
+
+`calccode/related_rates.py` does the mechanical half of a related rates problem. The caller writes the relation F(vars) = 0 as a `symbolic.py` tree, say x^2 + y^2 - 169 for a 13 m ladder. `time_derivative` differentiates both sides with respect to time by the chain rule, summing partial(F, var) * var_dt over every variable in the tree. `solve_rate` then substitutes the known values and known rates and solves for the one unknown rate.
+
+The solve step uses a small trick. dF/dt is always linear in the unknown rate, since the rate appears once per term with no powers. So instead of solving symbolically, I evaluate the tree twice with `eval_multi`: once with the unknown rate at 0 to get the constant term, once at 1 to read off the coefficient. The answer is minus their ratio. No new algebra machinery was needed.
+
+The tests are the three textbook problems. The ladder at x = 5, y = 12 with the bottom sliding at 1 m/s gives dy/dt = -5/12 m/s, and writing x = 13 cos(theta) gives dtheta/dt = -1/12 rad/s. The expanding circle gives dA/dt = 2 pi r dr/dt, checked at r = 3, dr/dt = 2 against 12 pi. The cone tank with radius 2 and height 5 reduces to V = (4 pi / 75) h^3, and at h = 2 with dV/dt = 3 the level rises at 75 / (16 pi) meters per minute. All expected values were computed by hand first.
+
+Where this breaks: the framework cannot set up the relation for you. Choosing the variables, finding the equation that ties them, and reducing it with the geometry (r = (2/5) h for the cone, from similar triangles) is the actual hard part of these problems, and it happens entirely in the caller's head. The module also assumes one unknown rate per call and a relation that holds at the instant in question; if the partial with respect to your unknown is zero at that instant, the rate drops out of the equation and `solve_rate` refuses with a ValueError instead of inventing an answer.
