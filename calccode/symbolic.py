@@ -212,3 +212,35 @@ class Log(_Unary):
 def diff(expr: Expr, var: str = "x") -> Expr:
     """Differentiate an expression tree and simplify the result."""
     return expr.diff(var).simplify()
+
+
+def partial(expr: Expr, var: str) -> Expr:
+    """Partial derivative with respect to one variable.
+
+    Var.diff already returns 0 for any other name, so partials are the
+    same machinery as diff, called with the variable of interest.
+    """
+    return expr.diff(var).simplify()
+
+
+def eval_multi(expr: Expr, env: dict[str, float]) -> float:
+    """Evaluate a tree with one value per variable name.
+
+    Single-variable eval() cannot do this because every Var reads the
+    same x. This walks the tree and looks each Var up in env instead.
+    """
+    if isinstance(expr, Const):
+        return expr.value
+    if isinstance(expr, Var):
+        if expr.name not in env:
+            raise KeyError(f"no value given for variable {expr.name!r}")
+        return env[expr.name]
+    if isinstance(expr, Add):
+        return eval_multi(expr.left, env) + eval_multi(expr.right, env)
+    if isinstance(expr, Mul):
+        return eval_multi(expr.left, env) * eval_multi(expr.right, env)
+    if isinstance(expr, Pow):
+        return eval_multi(expr.base, env) ** expr.exponent.value
+    if isinstance(expr, _Unary):
+        return float(expr.fn(eval_multi(expr.arg, env)))
+    raise TypeError(f"cannot evaluate node of type {type(expr).__name__}")
