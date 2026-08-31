@@ -11,6 +11,8 @@ from typing import Callable
 
 import numpy as np
 
+from calccode import regression
+
 DEFAULT_H = 1e-5
 
 
@@ -58,5 +60,7 @@ def fit_order(hs: np.ndarray, errors: np.ndarray) -> float:
     hs = np.asarray(hs, dtype=float)
     errors = np.asarray(errors, dtype=float)
     mask = errors > 0.0
-    slope, _ = np.polyfit(np.log(hs[mask]), np.log(errors[mask]), 1)
+    # Least squares on the log-log data, solved by the repo's own normal
+    # equations in regression.py. The slope is the second weight.
+    _, slope = regression.ols_closed_form(np.log(hs[mask]), np.log(errors[mask]))
     return float(slope)

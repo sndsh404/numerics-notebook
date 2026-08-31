@@ -6,7 +6,14 @@ loop written by hand. No numpy.linalg anywhere in this module.
 
 from __future__ import annotations
 
+import math
+
 import numpy as np
+
+
+def norm(v: np.ndarray) -> float:
+    """Euclidean norm, sqrt of the sum of squares, written by hand."""
+    return math.sqrt(sum(float(x) * float(x) for x in v))
 
 
 def _as_matrix(A: np.ndarray) -> np.ndarray:

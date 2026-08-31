@@ -7,8 +7,6 @@ anywhere.
 
 from __future__ import annotations
 
-import math
-
 import numpy as np
 
 from calccode import linalg
@@ -16,7 +14,7 @@ from calccode.montecarlo import Xorshift32
 
 
 def _norm(v: np.ndarray) -> float:
-    return math.sqrt(sum(float(x) * float(x) for x in v))
+    return linalg.norm(v)
 
 
 def _dot(u: np.ndarray, v: np.ndarray) -> float:

@@ -15,6 +15,7 @@ import numpy as np
 
 from calccode.derivatives import central_diff
 from calccode.gradient import numerical_gradient
+from calccode.linalg import norm
 from calccode.symbolic import Expr, eval_multi, partial
 
 ScalarFn = Callable[[np.ndarray], float]
@@ -70,10 +71,10 @@ def directional_derivative(
 ) -> float:
     """Derivative of f at x along a direction, unit-normalized first."""
     direction = np.asarray(direction, dtype=float)
-    norm = float(np.linalg.norm(direction))
-    if norm == 0.0:
+    norm_v = norm(direction)
+    if norm_v == 0.0:
         raise ValueError("direction must be nonzero")
-    u = direction / norm
+    u = direction / norm_v
     return float(gradient(f, x, h) @ u)
 
 
