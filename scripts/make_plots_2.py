@@ -23,7 +23,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from calccode import regression, transforms
+from calccode import fourier, montecarlo, ode_systems, regression, transforms
 from calccode.integrals import convergence_study
 from calccode.series import taylor_coefficients_from_expr, taylor_error, taylor_polynomial
 from calccode.symbolic import Sin, Var
@@ -131,6 +131,76 @@ def plot_least_squares() -> None:
     save(fig, "least_squares.png")
 
 
+def plot_pendulum_phase() -> None:
+    fig, ax = plt.subplots(figsize=(7, 6))
+    for theta0 in (0.3, 1.0, 2.4):
+        ts, ys = ode_systems.rk4_system(
+            ode_systems.pendulum_rhs(), 0.0, np.array([theta0, 0.0]), h=0.002, n_steps=6000
+        )
+        ax.plot(ys[:, 0], ys[:, 1], lw=1, label=f"theta0 = {theta0}")
+    ax.set_xlabel("theta")
+    ax.set_ylabel("omega")
+    ax.set_title("Nonlinear pendulum phase portrait")
+    ax.legend()
+    fig.tight_layout()
+    save(fig, "pendulum_phase.png")
+
+
+def plot_lorenz_divergence() -> None:
+    f = ode_systems.lorenz_rhs()
+    y0 = np.array([1.0, 1.0, 1.0])
+    ts, a = ode_systems.rk4_system(f, 0.0, y0, h=0.005, n_steps=6000)
+    _, b = ode_systems.rk4_system(f, 0.0, y0 + np.array([1e-6, 0.0, 0.0]), h=0.005, n_steps=6000)
+    sep = np.linalg.norm(a - b, axis=1)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+    ax1.plot(a[:, 0], a[:, 2], lw=0.4)
+    ax1.set_xlabel("x")
+    ax1.set_ylabel("z")
+    ax1.set_title("Lorenz attractor")
+    ax2.semilogy(ts, sep)
+    ax2.set_xlabel("t")
+    ax2.set_ylabel("separation (log scale)")
+    ax2.set_title("Two starts 1e-6 apart diverge")
+    fig.tight_layout()
+    save(fig, "lorenz_divergence.png")
+
+
+def plot_fourier_spectrum() -> None:
+    n = 512
+    sample_rate = 512.0
+    t = np.arange(n) / sample_rate
+    signal = 1.5 * np.sin(2 * math.pi * 3 * t) + 0.7 * np.sin(2 * math.pi * 7 * t)
+    amps = fourier.amplitude_spectrum(signal)
+    freqs = np.arange(amps.size) * sample_rate / n
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+    ax1.plot(t[:128], signal[:128])
+    ax1.set_xlabel("t (s)")
+    ax1.set_title("Signal: 1.5 sin(2 pi 3 t) + 0.7 sin(2 pi 7 t)")
+    ax2.stem(freqs[:20], amps[:20])
+    ax2.set_xlabel("frequency (Hz)")
+    ax2.set_ylabel("amplitude")
+    ax2.set_title("One-sided DFT spectrum")
+    fig.tight_layout()
+    save(fig, "fourier_spectrum.png")
+
+
+def plot_monte_carlo_scaling() -> None:
+    ns = np.array([100, 300, 1000, 3000, 10000, 30000, 100000])
+    ns_out, stds = montecarlo.pi_error_scaling(ns, n_seeds=25)
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.loglog(ns_out, stds, "o-", label="std of pi estimates (25 seeds)")
+    ax.loglog(ns_out, 1.7 / np.sqrt(ns_out), "--", color="gray", label="reference 1/sqrt(n)")
+    ax.set_xlabel("samples n")
+    ax.set_ylabel("standard deviation")
+    ax.set_title("Monte Carlo error scaling")
+    ax.legend()
+    fig.tight_layout()
+    save(fig, "monte_carlo_scaling.png")
+
+
 def main() -> None:
     for out_dir in OUT_DIRS:
         os.makedirs(out_dir, exist_ok=True)
@@ -142,6 +212,14 @@ def main() -> None:
     print("wrote arm_poses.png")
     plot_least_squares()
     print("wrote least_squares.png")
+    plot_pendulum_phase()
+    print("wrote pendulum_phase.png")
+    plot_lorenz_divergence()
+    print("wrote lorenz_divergence.png")
+    plot_fourier_spectrum()
+    print("wrote fourier_spectrum.png")
+    plot_monte_carlo_scaling()
+    print("wrote monte_carlo_scaling.png")
 
 
 if __name__ == "__main__":

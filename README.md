@@ -28,6 +28,9 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/linalg.py` | Linear algebra | Matmul, determinant, Gaussian elimination, rank; no numpy.linalg |
 | `calccode/transforms.py` | Robotics transforms | Rotations, Rodrigues' formula, quaternions, planar arm kinematics |
 | `calccode/regression.py` | Machine learning | Least squares two ways, logistic regression |
+| `calccode/ode_systems.py` | ODE systems | Nonlinear pendulum, Lotka-Volterra, Lorenz attractor on RK4 |
+| `calccode/fourier.py` | Fourier analysis | Hand-written O(n^2) DFT, inverse, dominant frequency detection |
+| `calccode/montecarlo.py` | Monte Carlo | Xorshift RNG, 1D and n-D integration, pi estimation, importance sampling |
 
 Each module has a matching file in `notes/` with study notes on what the code shows and where it breaks.
 
