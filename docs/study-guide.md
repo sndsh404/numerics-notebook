@@ -19,6 +19,7 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | Fundamental theorem of calculus | `calccode/integrals.py` with `calccode/derivatives.py`; `calccode/symbolic_integrate.py` (FTC part 2 on antiderivative trees) | `notes/07-integrals.md`, `notes/19-symbolic-integration.md` | `exercises/ex_integrals.py` |
 | Antiderivatives (power, trig, exp rules) | `calccode/symbolic_integrate.py` | `notes/19-symbolic-integration.md` | none yet |
 | Integration by parts | `calccode/symbolic_integrate.py` (x times sin, cos, exp, and ln via 1 * ln x) | `notes/19-symbolic-integration.md` | none yet |
+| u-substitution (linear inner function) | `calccode/symbolic_integrate.py` (f(a*x + b) for sin, cos, exp, powers) | `notes/19-symbolic-integration.md` | none yet |
 | Arc length and surface area | `calccode/applications.py` | `notes/20-applications.md` | `exercises/ex_applications.py` |
 | Volumes of revolution (disk, shell) | `calccode/applications.py` | `notes/20-applications.md` | `exercises/ex_applications.py` |
 | Series convergence | `calccode/convergence.py` | `notes/22-series-convergence.md` | `exercises/ex_series.py` |
@@ -41,7 +42,8 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 Honest gaps, in the order I would tackle them:
 
 - Implicit differentiation past the formula level. `implicit_diff` builds -Fx/Fy from the partials; it does not solve for higher derivatives or handle curves where Fy = 0.
-- u-substitution as a symbolic technique. `symbolic_integrate.py` raises NotImplementedError the moment a composite argument appears; guessing a substitution needs pattern matching the tree does not attempt. Integration by parts is in, but only for the narrow set x times sin, cos, or exp, plus ln(x).
+- Symbolic integration past the narrow patterns in `symbolic_integrate.py`. u-substitution only fires on a linear inner function a*x + b, so sin(x^2) still raises. Integration by parts covers only the single-x set (x times sin, cos, or exp, plus ln(x)), so x^2 e^x is out. No partial fractions, no trig substitution on the symbolic side.
+- Improper integrals past the one example in `integrals.py`. The 1/sqrt(x) demo shows a substitution removing a singularity, but there is no general machinery for infinite bounds or singular endpoints.
 - Related rates past one unknown. `related_rates.py` solves for a single rate per call and cannot set up the relation itself.
 - Sequences and series past the convergence tests in `convergence.py`: no root test or power series radius work.
 - Differential equations past RK4: no stiff solvers, no boundary value problems.

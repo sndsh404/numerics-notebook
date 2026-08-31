@@ -20,8 +20,8 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/derivatives.py` | Derivatives | Forward, backward, central differences, convergence order fitting |
 | `calccode/symbolic.py` | Symbolic differentiation | Expression trees, `diff()` with power, product, and chain rules |
 | `calccode/integrals.py` | Integration | Riemann sums, trapezoid, Simpson, empirical order checks |
-| `calccode/symbolic_integrate.py` | Symbolic integration | Rule-based antiderivatives, integration by parts, FTC definite integrals, Simpson fallback |
-| `calccode/applications.py` | Applications of integration | Arc length, disk and shell volumes, surface area of revolution |
+| `calccode/symbolic_integrate.py` | Symbolic integration | Rule-based antiderivatives, linear u-substitution, integration by parts, FTC definite integrals, Simpson fallback |
+| `calccode/applications.py` | Applications of integration | Arc length (trig substitution for the circle), disk and shell volumes, surface area of revolution |
 | `calccode/related_rates.py` | Related rates | Chain rule in time on relation trees, linear solve for one unknown rate |
 | `calccode/series.py` | Series | Taylor polynomials, partial sums, numeric ratio test |
 | `calccode/convergence.py` | Series convergence | Alternating error bound, integral test, comparison test, p-series verdict |
