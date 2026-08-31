@@ -1,0 +1,11 @@
+# 19 Symbolic Integration
+
+`calccode/symbolic_integrate.py` turns differentiation around. Where `symbolic.py` walks a tree and applies derivative rules, `integrate()` walks the same tree and applies antiderivative rules: constants, the power rule with x^(-1) special-cased to Log, sin, cos, exp, sums, and constant multiples. `definite_integral()` then evaluates the antiderivative at the two bounds and subtracts, which is the fundamental theorem of calculus doing exactly what it promises. The integral of x^2 from 0 to 1 comes back as 1/3 to machine precision, no panels involved.
+
+The tests lean on the existing machinery. For every rule, I differentiate the antiderivative with `diff()` and check it matches the integrand at random points. Differentiation is the inverse operation and I already trust it, so it grades the integrator for free. That trick only exists because both directions live in the same tree format.
+
+Anything outside the rule set raises NotImplementedError with the offending subtree in the message. sin(x^2), a product of two non-constant terms, a composite power: all refused, loudly. For definite integrals there is a fallback to Simpson's rule from `integrals.py`, because a number is still useful when a formula is out of reach. The indefinite case has no fallback; there is nothing numeric to fall back to.
+
+I also added `implicit_diff()` to `symbolic.py`. It takes the two partials of F(x, y) = 0, computed with the existing `partial()`, and returns the tree for -Fx/Fy. On the circle x^2 + y^2 = 25 it gives -x/y, checked with `eval_multi` since `eval()` only handles one variable. That closes the implicit differentiation gap in the study guide, at least for the formula level.
+
+Where this breaks: rule-based integration is undecidable in general. There is no finite rule list that integrates every elementary function, and even the decidable core (the Risch algorithm) is thousands of lines of algebra. My matcher only fires on exact pattern hits, so x sin(x) fails even though integration by parts settles it in two lines by hand. u-substitution is worse: it needs the matcher to guess a substitution, which means searching the tree for a function next to its own derivative. This tree makes no attempt at that, and I do not plan to teach it.

@@ -20,6 +20,7 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/derivatives.py` | Derivatives | Forward, backward, central differences, convergence order fitting |
 | `calccode/symbolic.py` | Symbolic differentiation | Expression trees, `diff()` with power, product, and chain rules |
 | `calccode/integrals.py` | Integration | Riemann sums, trapezoid, Simpson, empirical order checks |
+| `calccode/symbolic_integrate.py` | Symbolic integration | Rule-based antiderivatives, FTC definite integrals, Simpson fallback |
 | `calccode/series.py` | Series | Taylor polynomials, partial sums, numeric ratio test |
 | `calccode/integrators.py` | ODEs | Explicit Euler, semi-implicit Euler, RK4 |
 | `calccode/optimize.py` | Root finding | Bisection, Newton, secant, with iteration histories |

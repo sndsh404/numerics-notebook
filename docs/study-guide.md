@@ -11,11 +11,12 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | Derivative definition | `calccode/derivatives.py` | `notes/02-derivatives.md` | `exercises/ex_derivatives.py` |
 | Derivative rules (power, product) | `calccode/symbolic.py` | `notes/03-symbolic.md` | `exercises/ex_derivatives.py` |
 | Chain rule | `calccode/symbolic.py` | `notes/03-symbolic.md` | none yet |
-| Implicit differentiation | `calccode/symbolic.py` (explicit expressions only) | `notes/03-symbolic.md` | none yet |
+| Implicit differentiation | `calccode/symbolic.py` (`implicit_diff`, formula level: -Fx/Fy) | `notes/19-symbolic-integration.md` | none yet |
 | Optimization (critical points) | `calccode/optimize.py`, `calccode/gradient.py` | `notes/12-optimize.md`, `notes/05-gradient-descent.md` | `exercises/ex_optimize.py` |
 | L'Hopital's rule | `calccode/limits.py` (numeric check of 0/0 forms) | `notes/01-limits.md` | `exercises/ex_limits.py` |
 | Riemann sums | `calccode/integrals.py` | `notes/07-integrals.md` | `exercises/ex_integrals.py` |
-| Fundamental theorem of calculus | `calccode/integrals.py` with `calccode/derivatives.py` | `notes/07-integrals.md` | `exercises/ex_integrals.py` |
+| Fundamental theorem of calculus | `calccode/integrals.py` with `calccode/derivatives.py`; `calccode/symbolic_integrate.py` (FTC part 2 on antiderivative trees) | `notes/07-integrals.md`, `notes/19-symbolic-integration.md` | `exercises/ex_integrals.py` |
+| Antiderivatives (power, trig, exp rules) | `calccode/symbolic_integrate.py` | `notes/19-symbolic-integration.md` | none yet |
 | Series convergence | `calccode/series.py` (numeric ratio test) | `notes/08-series.md` | `exercises/ex_series.py` |
 | Taylor polynomials | `calccode/series.py` | `notes/08-series.md` | `exercises/ex_series.py` |
 
@@ -35,8 +36,8 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 Honest gaps, in the order I would tackle them:
 
 - Related rates. No module sets up two quantities tied by one equation and differentiates both sides with respect to time.
-- Integration by parts. Numeric quadrature in `integrals.py` never needs the technique, so there is nothing to check a symbolic answer against yet.
-- Implicit differentiation past the basics. `symbolic.py` differentiates explicit expressions; it does not take F(x, y) = 0 and solve for dy/dx.
-- u-substitution as a symbolic technique. The integrators evaluate f numerically, so substitution is sidestepped rather than taught.
+- Integration by parts as a symbolic technique. `symbolic_integrate.py` covers the basic rules but has no product rule in reverse, so x sin(x) is refused.
+- Implicit differentiation past the formula level. `implicit_diff` builds -Fx/Fy from the partials; it does not solve for higher derivatives or handle curves where Fy = 0.
+- u-substitution as a symbolic technique. `symbolic_integrate.py` raises NotImplementedError the moment a composite argument appears; guessing a substitution needs pattern matching the tree does not attempt.
 - Sequences and series past Taylor: no root test, integral test, or power series radius work.
 - Differential equations past RK4: no stiff solvers, no boundary value problems.
