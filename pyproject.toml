@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "calccode"
+version = "0.1.0"
+description = "Calculus I topics implemented from scratch in Python"
+requires-python = ">=3.11"
+dependencies = ["numpy", "matplotlib"]
+
+[tool.setuptools]
+packages = ["calccode"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
