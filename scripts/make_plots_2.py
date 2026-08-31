@@ -23,7 +23,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from calccode import fourier, interpolation, montecarlo, ode_systems, regression, transforms
+from calccode import fourier, interpolation, montecarlo, ode_systems, probability, regression, transforms
 from calccode.integrals import convergence_study
 from calccode.series import taylor_coefficients_from_expr, taylor_error, taylor_polynomial
 from calccode.symbolic import Sin, Var
@@ -229,6 +229,37 @@ def plot_monte_carlo_scaling() -> None:
     save(fig, "monte_carlo_scaling.png")
 
 
+def plot_clt_demo() -> None:
+    lam = 1.0
+    n = 30
+    data = probability.clt_demo(lam=lam, sample_size=n, n_means=4000, seed=7)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+    pop_grid = np.linspace(0.0, 6.0, 200)
+    pop_pdf = np.array([probability.exponential_pdf(float(x), lam) for x in pop_grid])
+    ax1.hist(data["population"], bins=80, range=(0.0, 6.0), density=True, color="tab:blue", alpha=0.7)
+    ax1.plot(pop_grid, pop_pdf, "k-", lw=2, label=f"exponential pdf, lam = {lam}")
+    ax1.set_xlabel("x")
+    ax1.set_ylabel("density")
+    ax1.set_title("Population: exponential draws")
+    ax1.legend()
+
+    ax2.hist(data["means"], bins=60, density=True, color="tab:orange", alpha=0.7)
+    ax2.plot(
+        data["grid"],
+        data["normal_curve"],
+        "k-",
+        lw=2,
+        label=f"normal mu = {data['mu']:.2f}, sigma = {data['sigma']:.3f}",
+    )
+    ax2.set_xlabel("sample mean")
+    ax2.set_title(f"Means of {n} draws approach a normal")
+    ax2.legend()
+
+    fig.tight_layout()
+    save(fig, "clt_demo.png")
+
+
 def main() -> None:
     for out_dir in OUT_DIRS:
         os.makedirs(out_dir, exist_ok=True)
@@ -250,6 +281,8 @@ def main() -> None:
     print("wrote runge_phenomenon.png")
     plot_monte_carlo_scaling()
     print("wrote monte_carlo_scaling.png")
+    plot_clt_demo()
+    print("wrote clt_demo.png")
 
 
 if __name__ == "__main__":

@@ -36,10 +36,15 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/ode_systems.py` | ODE systems | Nonlinear pendulum, Lotka-Volterra, Lorenz attractor on RK4 |
 | `calccode/fourier.py` | Fourier analysis | Hand-written O(n^2) DFT, inverse, dominant frequency detection |
 | `calccode/montecarlo.py` | Monte Carlo | Xorshift RNG, 1D and n-D integration, pi estimation, importance sampling |
+| `calccode/probability.py` | Probability | Box-Muller normals, PDFs and CDFs (normal CDF by Simpson), percentiles, CLT demo |
 | `calccode/interpolation.py` | Interpolation | Barycentric Lagrange, divided differences, cubic splines, Chebyshev nodes |
 | `calccode/eigen.py` | Eigenvalues | Power iteration, inverse iteration with shift, deflation |
 
 Each module has a matching file in `notes/` with study notes on what the code shows and where it breaks. For a topic-by-topic checklist against a Calculus I/II syllabus, see [docs/study-guide.md](docs/study-guide.md).
+
+![Central limit theorem demo](docs/img/clt_demo.png)
+
+Exponential population on the left, means of 30 draws on the right, with the normal curve the CLT predicts overlaid. From `calccode/probability.py`.
 
 ## Exercises
 

@@ -32,6 +32,7 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | Robotics transforms | `calccode/transforms.py` | `notes/10-transforms.md` | `exercises/ex_transforms.py` |
 | Fourier analysis | `calccode/fourier.py` | `notes/15-fourier.md` | `exercises/ex_fourier.py` |
 | Monte Carlo | `calccode/montecarlo.py` | `notes/16-monte-carlo.md` | `exercises/ex_montecarlo.py` |
+| Probability and statistics | `calccode/probability.py` | `notes/23-probability.md` | none yet |
 | Interpolation | `calccode/interpolation.py` | `notes/17-interpolation.md` | `exercises/ex_interpolation.py` |
 | Eigenvalues | `calccode/eigen.py` | `notes/18-eigen.md` | `exercises/ex_eigen.py` |
 
@@ -44,3 +45,4 @@ Honest gaps, in the order I would tackle them:
 - Related rates past one unknown. `related_rates.py` solves for a single rate per call and cannot set up the relation itself.
 - Sequences and series past the convergence tests in `convergence.py`: no root test or power series radius work.
 - Differential equations past RK4: no stiff solvers, no boundary value problems.
+- Probability past the basics in `probability.py`: the normal CDF integrates the density per call instead of using an erf approximation, and there is no regression-style inference (no confidence intervals, no hypothesis tests).
