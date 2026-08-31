@@ -3,7 +3,6 @@
 Reference implementation: calccode/autograd.py.
 """
 
-import math
 
 
 def relu(x: float) -> float:

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import math
 import random
-from typing import Callable, Iterator
+from typing import Callable
 
 import numpy as np
 

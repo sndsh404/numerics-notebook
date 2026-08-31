@@ -18,7 +18,6 @@ import numpy as np
 from calccode.integrals import simpson
 from calccode.montecarlo import Xorshift32
 
-
 # Sampling
 
 

@@ -7,8 +7,8 @@ amplitude spectrum.
 
 from __future__ import annotations
 
-import math
 import cmath
+import math
 
 import numpy as np
 

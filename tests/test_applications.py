@@ -1,6 +1,12 @@
 import math
 
-from calccode.applications import arc_length, arc_length_trig_circle, surface_area, volume_disk, volume_shell
+from calccode.applications import (
+    arc_length,
+    arc_length_trig_circle,
+    surface_area,
+    volume_disk,
+    volume_shell,
+)
 
 R = 2.0
 

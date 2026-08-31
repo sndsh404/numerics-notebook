@@ -9,8 +9,6 @@ numpy.linalg, no sklearn.
 
 from __future__ import annotations
 
-import math
-
 import numpy as np
 
 from calccode import linalg

@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from calccode.montecarlo import Xorshift32
+from calccode.montecarlo import Xorshift32  # noqa: F401  (provided for the exercise)
 
 
 def estimate_pi(n: int, seed: int = 42) -> float:

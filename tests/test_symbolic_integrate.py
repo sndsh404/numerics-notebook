@@ -4,8 +4,21 @@ import numpy as np
 import pytest
 
 from calccode.integrals import simpson
-from calccode.symbolic import Add, Const, Cos, Exp, Log, Mul, Pow, Sin, Var, diff, implicit_diff, partial
-from calccode.symbolic import eval_multi
+from calccode.symbolic import (
+    Add,
+    Const,
+    Cos,
+    Exp,
+    Log,
+    Mul,
+    Pow,
+    Sin,
+    Var,
+    diff,
+    eval_multi,
+    implicit_diff,
+    partial,
+)
 from calccode.symbolic_integrate import definite_integral, integrate
 
 x = Var("x")

@@ -3,7 +3,6 @@
 Reference implementation: calccode/series.py.
 """
 
-import math
 from typing import Callable
 
 

@@ -1,7 +1,5 @@
 import math
 
-import numpy as np
-
 from calccode.limits import limit, one_sided_limit
 
 

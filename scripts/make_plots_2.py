@@ -23,7 +23,17 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from calccode import fourier, interpolation, kinematics, ml, montecarlo, ode_systems, probability, regression, transforms
+from calccode import (
+    fourier,
+    interpolation,
+    kinematics,
+    ml,
+    montecarlo,
+    ode_systems,
+    probability,
+    regression,
+    transforms,
+)
 from calccode.integrals import convergence_study
 from calccode.series import taylor_coefficients_from_expr, taylor_error, taylor_polynomial
 from calccode.symbolic import Sin, Var

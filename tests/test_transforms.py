@@ -1,10 +1,8 @@
 import math
 
 import numpy as np
-import pytest
 
-from calccode import linalg
-from calccode import transforms
+from calccode import linalg, transforms
 
 
 def test_rot2_quarter_turn():

@@ -22,7 +22,20 @@ part of a related rates problem, and it stays with the caller.
 
 from __future__ import annotations
 
-from calccode.symbolic import Add, Const, Cos, Exp, Expr, Log, Mul, Pow, Sin, Var, eval_multi, partial
+from calccode.symbolic import (
+    Add,
+    Const,
+    Cos,
+    Exp,
+    Expr,
+    Log,
+    Mul,
+    Pow,
+    Sin,
+    Var,
+    eval_multi,
+    partial,
+)
 
 
 def _var_names(expr: Expr) -> list[str]:

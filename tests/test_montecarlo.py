@@ -4,8 +4,8 @@ import numpy as np
 import pytest
 
 from calccode import montecarlo
-from calccode.montecarlo import Xorshift32
 from calccode.derivatives import fit_order
+from calccode.montecarlo import Xorshift32
 
 
 def test_rng_is_deterministic():

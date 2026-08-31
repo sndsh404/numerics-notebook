@@ -12,5 +12,20 @@ dependencies = ["numpy", "matplotlib"]
 [tool.setuptools]
 packages = ["calccode"]
 
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+ignore = [
+    "E402",  # module-level imports after sys.path tweaks in scripts
+    "E501",  # line length; docstrings and URLs run long
+    "E741",  # single-letter names like l are idiomatic here (link lengths)
+    "E731",  # lambda assignments are the house style (e.g. _backward closures)
+    "UP008", # super() calls in class bodies are fine as written
+    "UP035", # typing.Callable imports are fine on the supported Python versions
+    "UP037", # quoted annotations stay; they document intent for readers
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
