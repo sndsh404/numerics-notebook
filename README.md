@@ -24,6 +24,7 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/applications.py` | Applications of integration | Arc length, disk and shell volumes, surface area of revolution |
 | `calccode/related_rates.py` | Related rates | Chain rule in time on relation trees, linear solve for one unknown rate |
 | `calccode/series.py` | Series | Taylor polynomials, partial sums, numeric ratio test |
+| `calccode/convergence.py` | Series convergence | Alternating error bound, integral test, comparison test, p-series verdict |
 | `calccode/integrators.py` | ODEs | Explicit Euler, semi-implicit Euler, RK4 |
 | `calccode/optimize.py` | Root finding | Bisection, Newton, secant, with iteration histories |
 | `calccode/multivar.py` | Multivariable calculus | Partials, gradient, Jacobian, Hessian, gradient checking |

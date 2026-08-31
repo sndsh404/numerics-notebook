@@ -19,9 +19,9 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | Fundamental theorem of calculus | `calccode/integrals.py` with `calccode/derivatives.py`; `calccode/symbolic_integrate.py` (FTC part 2 on antiderivative trees) | `notes/07-integrals.md`, `notes/19-symbolic-integration.md` | `exercises/ex_integrals.py` |
 | Antiderivatives (power, trig, exp rules) | `calccode/symbolic_integrate.py` | `notes/19-symbolic-integration.md` | none yet |
 | Integration by parts | `calccode/symbolic_integrate.py` (x times sin, cos, exp, and ln via 1 * ln x) | `notes/19-symbolic-integration.md` | none yet |
-| Arc length and surface area | `calccode/applications.py` | `notes/20-applications.md` | none yet |
-| Volumes of revolution (disk, shell) | `calccode/applications.py` | `notes/20-applications.md` | none yet |
-| Series convergence | `calccode/series.py` (numeric ratio test) | `notes/08-series.md` | `exercises/ex_series.py` |
+| Arc length and surface area | `calccode/applications.py` | `notes/20-applications.md` | `exercises/ex_applications.py` |
+| Volumes of revolution (disk, shell) | `calccode/applications.py` | `notes/20-applications.md` | `exercises/ex_applications.py` |
+| Series convergence | `calccode/convergence.py` | `notes/22-series-convergence.md` | `exercises/ex_series.py` |
 | Taylor polynomials | `calccode/series.py` | `notes/08-series.md` | `exercises/ex_series.py` |
 
 ## Beyond calculus
@@ -30,10 +30,10 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | --- | --- | --- | --- |
 | Linear algebra | `calccode/linalg.py` | `notes/09-linalg.md` | `exercises/ex_linalg.py` |
 | Robotics transforms | `calccode/transforms.py` | `notes/10-transforms.md` | `exercises/ex_transforms.py` |
-| Fourier analysis | `calccode/fourier.py` | `notes/15-fourier.md` | none yet |
-| Monte Carlo | `calccode/montecarlo.py` | `notes/16-monte-carlo.md` | none yet |
-| Interpolation | `calccode/interpolation.py` | `notes/17-interpolation.md` | none yet |
-| Eigenvalues | `calccode/eigen.py` | `notes/18-eigen.md` | none yet |
+| Fourier analysis | `calccode/fourier.py` | `notes/15-fourier.md` | `exercises/ex_fourier.py` |
+| Monte Carlo | `calccode/montecarlo.py` | `notes/16-monte-carlo.md` | `exercises/ex_montecarlo.py` |
+| Interpolation | `calccode/interpolation.py` | `notes/17-interpolation.md` | `exercises/ex_interpolation.py` |
+| Eigenvalues | `calccode/eigen.py` | `notes/18-eigen.md` | `exercises/ex_eigen.py` |
 
 ## Not covered yet
 
@@ -42,5 +42,5 @@ Honest gaps, in the order I would tackle them:
 - Implicit differentiation past the formula level. `implicit_diff` builds -Fx/Fy from the partials; it does not solve for higher derivatives or handle curves where Fy = 0.
 - u-substitution as a symbolic technique. `symbolic_integrate.py` raises NotImplementedError the moment a composite argument appears; guessing a substitution needs pattern matching the tree does not attempt. Integration by parts is in, but only for the narrow set x times sin, cos, or exp, plus ln(x).
 - Related rates past one unknown. `related_rates.py` solves for a single rate per call and cannot set up the relation itself.
-- Sequences and series past Taylor: no root test, integral test, or power series radius work.
+- Sequences and series past the convergence tests in `convergence.py`: no root test or power series radius work.
 - Differential equations past RK4: no stiff solvers, no boundary value problems.
