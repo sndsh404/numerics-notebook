@@ -4,9 +4,12 @@
 rules: constants, the power rule (including x^(-1) giving Log), sin,
 cos, exp, sums, and constant multiples. A narrow integration by parts
 set covers x times sin, cos, or exp of x (and constant multiples), and
-ln(x) through the classic 1 * ln(x) trick. Anything outside that set
-raises NotImplementedError naming the subtree it gave up on. There is
-no substitution; the matcher only fires on exact pattern hits.
+ln(x) through the classic 1 * ln(x) trick. One substitution pattern is
+in: when the argument of sin, cos, or exp, or the base of a power, is
+a linear a*x + b, the antiderivative is F(a*x + b) / a by the linear
+u-substitution. Anything outside that set raises NotImplementedError
+naming the subtree it gave up on; the matcher only fires on exact
+pattern hits.
 
 ``definite_integral`` applies FTC part 2: evaluate the antiderivative
 at the bounds and subtract. When no rule matches the integrand it
@@ -22,6 +25,35 @@ from calccode.symbolic import Add, Const, Cos, Exp, Expr, Log, Mul, Pow, Sin, Va
 
 def _is_var(node: Expr, var: str) -> bool:
     return isinstance(node, Var) and node.name == var
+
+
+def _linear_coefficients(node: Expr, var: str) -> "tuple[float, float] | None":
+    """Coefficients (a, b) if the tree is a*x + b, else None.
+
+    Walks Const, Var, Add, and Mul by a constant and folds them into a
+    slope and intercept. Anything else (a nonlinear subtree, a Var with
+    a different name) returns None, so the caller falls through to
+    NotImplementedError instead of guessing.
+    """
+    node = node.simplify()
+    if isinstance(node, Const):
+        return (0.0, node.value)
+    if _is_var(node, var):
+        return (1.0, 0.0)
+    if isinstance(node, Add):
+        left = _linear_coefficients(node.left, var)
+        right = _linear_coefficients(node.right, var)
+        if left is not None and right is not None:
+            return (left[0] + right[0], left[1] + right[1])
+        return None
+    if isinstance(node, Mul):
+        for const, rest in ((node.left, node.right), (node.right, node.left)):
+            if isinstance(const, Const):
+                inner = _linear_coefficients(rest, var)
+                if inner is not None:
+                    return (const.value * inner[0], const.value * inner[1])
+        return None
+    return None
 
 
 def _integrate_by_parts_mul(expr: Mul, var: str) -> "Expr | None":
@@ -50,12 +82,13 @@ def integrate(expr: Expr, var: str = "x") -> Expr:
     """Antiderivative of a tree with respect to one variable.
 
     Covers constants, Var, Add, constant multiples, Pow with constant
-    exponent (n = -1 maps to Log), and Sin, Cos, Exp applied directly
-    to the variable. Integration by parts covers x times Sin, Cos, or
-    Exp of the variable, and Log of the variable by the 1 * ln(x)
-    trick. A Var with a different name is treated as a constant,
-    matching how diff treats it. Raises NotImplementedError for
-    everything else.
+    exponent (n = -1 maps to Log), and Sin, Cos, Exp. The argument of
+    Sin, Cos, Exp and the base of Pow may be the plain variable or a
+    linear a*x + b, handled by the linear u-substitution. Integration
+    by parts covers x times Sin, Cos, or Exp of the variable, and Log
+    of the variable by the 1 * ln(x) trick. A Var with a different
+    name is treated as a constant, matching how diff treats it. Raises
+    NotImplementedError for everything else.
     """
     expr = expr.simplify()
 
@@ -92,23 +125,43 @@ def integrate(expr: Expr, var: str = "x") -> Expr:
                 Const(1.0 / (n + 1.0)),
                 Pow(Var(var), Const(n + 1.0)),
             )
+        linear = _linear_coefficients(expr.base, var)
+        if linear is not None and linear[0] != 0.0:
+            # Linear u-substitution: int((a x + b)^n) = (a x + b)^(n+1) / (a (n+1)).
+            a = linear[0]
+            if n == -1.0:
+                return Mul(Const(1.0 / a), Log(expr.base))
+            return Mul(
+                Const(1.0 / (a * (n + 1.0))),
+                Pow(expr.base, Const(n + 1.0)),
+            )
         raise NotImplementedError(
             f"no antiderivative rule for {expr}; "
-            "power rule needs the plain variable as base"
+            "power rule needs the plain variable or a linear a*x + b as base"
         )
 
     if isinstance(expr, (Sin, Cos, Exp)):
-        if not _is_var(expr.arg, var):
-            raise NotImplementedError(
-                f"no antiderivative rule for {expr}; "
-                "the argument must be the plain variable, "
-                "u-substitution is not implemented"
-            )
-        if isinstance(expr, Sin):
-            return Mul(Const(-1.0), Cos(Var(var)))
-        if isinstance(expr, Cos):
-            return Sin(Var(var))
-        return Exp(Var(var))
+        if _is_var(expr.arg, var):
+            if isinstance(expr, Sin):
+                return Mul(Const(-1.0), Cos(Var(var)))
+            if isinstance(expr, Cos):
+                return Sin(Var(var))
+            return Exp(Var(var))
+        linear = _linear_coefficients(expr.arg, var)
+        if linear is not None and linear[0] != 0.0:
+            # Linear u-substitution: int f(a x + b) = F(a x + b) / a.
+            a = linear[0]
+            if isinstance(expr, Sin):
+                outer = Mul(Const(-1.0), Cos(expr.arg))
+            elif isinstance(expr, Cos):
+                outer = Sin(expr.arg)
+            else:
+                outer = Exp(expr.arg)
+            return Mul(Const(1.0 / a), outer)
+        raise NotImplementedError(
+            f"no antiderivative rule for {expr}; "
+            "the argument must be the plain variable or a linear a*x + b"
+        )
 
     if isinstance(expr, Log):
         if not _is_var(expr.arg, var):

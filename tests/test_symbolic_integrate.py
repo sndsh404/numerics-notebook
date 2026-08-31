@@ -122,9 +122,39 @@ def test_unsupported_product_raises_with_subtree():
 
 def test_unsupported_composition_raises():
     with pytest.raises(NotImplementedError):
-        integrate(Sin(Pow(x, Const(2.0))))  # needs u-substitution
-    with pytest.raises(NotImplementedError):
         integrate(Pow(Sin(x), Const(2.0)))
+
+
+def test_u_substitution_sin_exp():
+    # sin(3x) -> -cos(3x)/3; e^(2x) -> e^(2x)/2
+    check_antiderivative(Sin(Mul(Const(3.0), x)), -2.0, 2.0)
+    check_antiderivative(Exp(Mul(Const(2.0), x)), -1.0, 1.0)
+
+
+def test_u_substitution_power_of_linear():
+    # (2x + 1)^5 -> (2x + 1)^6 / 12
+    check_antiderivative(Pow(Add(Mul(Const(2.0), x), Const(1.0)), Const(5.0)), -1.0, 2.0)
+    # (2x + 1)^(-1) -> log(2x + 1) / 2
+    check_antiderivative(Pow(Add(Mul(Const(2.0), x), Const(1.0)), Const(-1.0)), 0.25, 3.0)
+
+
+def test_u_substitution_negative_slope():
+    # cos(1 - x) -> -sin(1 - x); a = -1 flips the sign
+    check_antiderivative(Cos(Add(Const(1.0), Mul(Const(-1.0), x))), -3.0, 3.0)
+
+
+def test_u_substitution_constant_multiple():
+    # 5 e^(2x) -> 5 e^(2x) / 2, via the existing constant multiple rule
+    check_antiderivative(Mul(Const(5.0), Exp(Mul(Const(2.0), x))), -1.0, 1.0)
+
+
+def test_u_substitution_refuses_nonlinear_inner():
+    with pytest.raises(NotImplementedError):
+        integrate(Sin(Pow(x, Const(2.0))))  # sin(x^2), no linear inner function
+    with pytest.raises(NotImplementedError):
+        integrate(Exp(Pow(x, Const(2.0))))  # e^(x^2) has no elementary form
+    with pytest.raises(NotImplementedError):
+        integrate(Pow(Add(Pow(x, Const(2.0)), Const(1.0)), Const(3.0)))  # (x^2+1)^3
 
 
 def test_fallback_matches_simpson():
