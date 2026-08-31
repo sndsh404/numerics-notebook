@@ -1,6 +1,6 @@
 import math
 
-from calccode.applications import arc_length, surface_area, volume_disk, volume_shell
+from calccode.applications import arc_length, arc_length_trig_circle, surface_area, volume_disk, volume_shell
 
 R = 2.0
 
@@ -28,6 +28,15 @@ def test_semicircle_arc_length_shrunk_interval():
     # The two missing end caps cost about 2 sqrt(2 r eps) ~ 0.126,
     # so the full half circumference pi r is only this close.
     assert abs(got - math.pi * R) < 0.15
+
+
+def test_semicircle_arc_length_trig_substitution():
+    # x = r sin(t) turns the singular arc length integral into the
+    # integral of the constant r over [-pi/2, pi/2], which Simpson
+    # gets exactly. No shrunk interval, no missing caps.
+    for r in (1.0, 2.5):
+        got = arc_length_trig_circle(r, 200)
+        assert abs(got - math.pi * r) < 1e-9
 
 
 def test_semicircle_volume_sphere():
