@@ -10,11 +10,17 @@ import numpy as np
 import pytest
 
 from exercises import (
+    ex_applications,
     ex_autograd,
     ex_derivatives,
+    ex_eigen,
+    ex_fourier,
     ex_integrals,
+    ex_interpolation,
     ex_linalg,
     ex_limits,
+    ex_montecarlo,
+    ex_multivar,
     ex_optimize,
     ex_series,
     ex_transforms,
@@ -175,3 +181,82 @@ class TestOptimize:
         f = lambda x: x * x - 2.0
         x1 = ex_optimize.newton_step(f, 2.0)
         assert abs(f(x1)) < abs(f(2.0))
+
+
+class TestMultivar:
+    def test_partial_diff(self):
+        f = lambda x: x[0] ** 2 * x[1]
+        p = np.array([2.0, 3.0])
+        assert abs(ex_multivar.partial_diff(f, p, 0) - 12.0) < 1e-6
+        assert abs(ex_multivar.partial_diff(f, p, 1) - 4.0) < 1e-6
+
+    def test_gradient(self):
+        f = lambda x: x[0] ** 2 + 3.0 * x[0] * x[1]
+        g = ex_multivar.gradient(f, np.array([1.0, 2.0]))
+        assert np.allclose(g, [8.0, 3.0], atol=1e-5)
+
+    def test_directional_derivative(self):
+        f = lambda x: x[0] ** 2 + x[1] ** 2
+        d = ex_multivar.directional_derivative(f, np.array([3.0, 4.0]), np.array([1.0, 1.0]))
+        assert abs(d - 14.0 / math.sqrt(2.0)) < 1e-5
+
+
+class TestFourier:
+    def test_dft_magnitude_of_pure_tone(self):
+        n = 64
+        signal = np.array([math.sin(2.0 * math.pi * 3.0 * j / n) for j in range(n)])
+        assert abs(ex_fourier.dft_magnitude(signal, 3) - n / 2.0) < 1e-8
+
+    def test_round_trip(self):
+        signal = np.array([0.5, -1.0, 2.25, 0.125, 3.0])
+        assert np.allclose(ex_fourier.dft_round_trip(signal), signal, atol=1e-12)
+
+
+class TestMonteCarlo:
+    def test_estimate_pi(self):
+        assert abs(ex_montecarlo.estimate_pi(20000) - math.pi) < 0.05
+
+    def test_error_shrinks_with_n(self):
+        ns = np.array([2000, 32000])
+        _, stds = ex_montecarlo.pi_error_scaling(ns, n_seeds=10)
+        assert stds[1] < stds[0]
+
+
+class TestInterpolation:
+    def test_piecewise_linear(self):
+        xs = np.array([0.0, 1.0, 2.0])
+        ys = np.array([0.0, 1.0, 0.0])
+        assert abs(ex_interpolation.piecewise_linear(xs, ys, 0.25) - 0.25) < 1e-12
+        assert ex_interpolation.piecewise_linear(xs, ys, -1.0) == 0.0
+        assert ex_interpolation.piecewise_linear(xs, ys, 5.0) == 0.0
+
+    def test_lagrange_basis_on_nodes(self):
+        xs = np.array([-1.0, 0.0, 2.0])
+        for j in range(3):
+            for k in range(3):
+                want = 1.0 if j == k else 0.0
+                assert abs(ex_interpolation.lagrange_basis(xs, j, xs[k]) - want) < 1e-12
+
+
+class TestEigen:
+    def test_power_step_moves_toward_dominant_axis(self):
+        A = np.array([[2.0, 0.0], [0.0, 1.0]])
+        v = np.array([1.0, 1.0]) / math.sqrt(2.0)
+        w = ex_eigen.power_step(A, v)
+        assert abs(np.linalg.norm(w) - 1.0) < 1e-12
+        assert abs(w[0]) > abs(v[0])
+
+    def test_residual_of_exact_eigenpair(self):
+        A = np.array([[2.0, 1.0], [1.0, 2.0]])
+        v = np.array([1.0, 1.0]) / math.sqrt(2.0)
+        assert ex_eigen.residual(A, 3.0, v) < 1e-12
+
+
+class TestApplications:
+    def test_arc_length_of_straight_line(self):
+        got = ex_applications.arc_length(lambda x: 2.0 * x + 1.0, 0.0, 3.0)
+        assert abs(got - 3.0 * math.sqrt(5.0)) < 1e-6
+
+    def test_volume_disk_of_cylinder(self):
+        got = ex_applications.volume_disk(lambda x: 2.0, 0.0, 5.0)
+        assert abs(got - 20.0 * math.pi) < 1e-6
