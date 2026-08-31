@@ -7,6 +7,7 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 ## Contents
 
 - [Modules](#modules)
+- [Exercises](#exercises)
 - [Figures](#figures)
 - [Quickstart](#quickstart)
 - [License](#license)
@@ -31,8 +32,10 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/ode_systems.py` | ODE systems | Nonlinear pendulum, Lotka-Volterra, Lorenz attractor on RK4 |
 | `calccode/fourier.py` | Fourier analysis | Hand-written O(n^2) DFT, inverse, dominant frequency detection |
 | `calccode/montecarlo.py` | Monte Carlo | Xorshift RNG, 1D and n-D integration, pi estimation, importance sampling |
+| `calccode/interpolation.py` | Interpolation | Barycentric Lagrange, divided differences, cubic splines, Chebyshev nodes |
+| `calccode/eigen.py` | Eigenvalues | Power iteration, inverse iteration with shift, deflation |
 
-Each module has a matching file in `notes/` with study notes on what the code shows and where it breaks.
+Each module has a matching file in `notes/` with study notes on what the code shows and where it breaks. For a topic-by-topic checklist against a Calculus I/II syllabus, see [docs/study-guide.md](docs/study-guide.md).
 
 ## Exercises
 
@@ -63,6 +66,10 @@ Taylor polynomials of growing degree, and how the error grows away from the expa
 ![Planar arm poses](docs/img/arm_poses.png)
 
 Forward kinematics of a 2-link planar arm at three joint configurations.
+
+![Runge phenomenon](docs/img/runge_phenomenon.png)
+
+Interpolating 1 / (1 + 25 x^2) on 15 equispaced nodes oscillates at the ends; the same degree on Chebyshev nodes tracks the function.
 
 ## Quickstart
 

@@ -23,7 +23,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from calccode import fourier, montecarlo, ode_systems, regression, transforms
+from calccode import fourier, interpolation, montecarlo, ode_systems, regression, transforms
 from calccode.integrals import convergence_study
 from calccode.series import taylor_coefficients_from_expr, taylor_error, taylor_polynomial
 from calccode.symbolic import Sin, Var
@@ -186,6 +186,34 @@ def plot_fourier_spectrum() -> None:
     save(fig, "fourier_spectrum.png")
 
 
+def plot_runge_phenomenon() -> None:
+    f = lambda x: 1.0 / (1.0 + 25.0 * x * x)
+    n = 15
+    grid = np.linspace(-1.0, 1.0, 1000)
+    exact = np.array([f(float(v)) for v in grid])
+
+    xs_eq = np.linspace(-1.0, 1.0, n)
+    ys_eq = np.array([f(float(v)) for v in xs_eq])
+    p_eq = np.array([interpolation.lagrange_eval(xs_eq, ys_eq, float(v)) for v in grid])
+
+    xs_ch = interpolation.chebyshev_nodes(n)
+    ys_ch = np.array([f(float(v)) for v in xs_ch])
+    p_ch = np.array([interpolation.lagrange_eval(xs_ch, ys_ch, float(v)) for v in grid])
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+    ax.plot(grid, exact, "k-", lw=2, label="Runge function 1 / (1 + 25 x^2)")
+    ax.plot(grid, p_eq, "--", color="tab:red", label=f"equispaced nodes, n = {n}")
+    ax.plot(grid, p_ch, "-", color="tab:blue", label=f"Chebyshev nodes, n = {n}")
+    ax.plot(xs_eq, ys_eq, "o", color="tab:red", markersize=4)
+    ax.plot(xs_ch, ys_ch, "s", color="tab:blue", markersize=4)
+    ax.set_ylim(-1.5, 2.0)
+    ax.set_xlabel("x")
+    ax.set_title("Runge phenomenon: node placement beats node count")
+    ax.legend()
+    fig.tight_layout()
+    save(fig, "runge_phenomenon.png")
+
+
 def plot_monte_carlo_scaling() -> None:
     ns = np.array([100, 300, 1000, 3000, 10000, 30000, 100000])
     ns_out, stds = montecarlo.pi_error_scaling(ns, n_seeds=25)
@@ -218,6 +246,8 @@ def main() -> None:
     print("wrote lorenz_divergence.png")
     plot_fourier_spectrum()
     print("wrote fourier_spectrum.png")
+    plot_runge_phenomenon()
+    print("wrote runge_phenomenon.png")
     plot_monte_carlo_scaling()
     print("wrote monte_carlo_scaling.png")
 

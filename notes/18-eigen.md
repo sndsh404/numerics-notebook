@@ -1,0 +1,9 @@
+# 18 Eigen
+
+`calccode/eigen.py` finds eigenvalues with two loops and a solve. Power iteration is the idea at its barest: start with a vector, multiply by A, normalize, repeat. The component along the dominant eigenvector gets multiplied by the largest |lambda| every round, so it drowns out everything else. The Rayleigh quotient v^T A v / v^T v reads off the eigenvalue once the vector stops moving.
+
+Inverse iteration flips the trick. Power iteration on (A - shift I)^{-1} converges to the eigenvalue nearest the shift, because that eigenvalue maps to the largest value of 1 / (lambda - shift). Each step is a linear solve, and I route it through `linalg.solve` with partial pivoting, so no new matrix machinery was needed. A shift of 2.1 on my test matrix pulls out the middle eigenvalue 2.653, skipping both the dominant 4.879 and the smallest 1.468. Deflation rounds it out: subtract lambda v v^T from a symmetric matrix and power iteration on the remainder finds the next eigenvalue down.
+
+The honest check is the residual ||A v - lambda v||, and every test asserts it directly. Eigenvalue guesses from a textbook formula would not catch a sign flip in my matmul; the residual does. Start vectors come from the xorshift RNG in `montecarlo.py`, so runs are reproducible without numpy.random in the module.
+
+Where this breaks: power iteration stalls when the two largest eigenvalues are close in magnitude. The convergence factor per step is |lambda2 / lambda1|, and at a ratio of 0.999 you need thousands of iterations per decimal digit. A tie is fatal: the iterates bounce between two directions and never settle. Nonsymmetric matrices break the deflation step too, since the eigenvectors stop being orthogonal. For anything past toy sizes, the QR algorithm exists because this loop does not scale.
