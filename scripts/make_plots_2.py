@@ -23,7 +23,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from calccode import fourier, interpolation, kinematics, montecarlo, ode_systems, probability, regression, transforms
+from calccode import fourier, interpolation, kinematics, ml, montecarlo, ode_systems, probability, regression, transforms
 from calccode.integrals import convergence_study
 from calccode.series import taylor_coefficients_from_expr, taylor_error, taylor_polynomial
 from calccode.symbolic import Sin, Var
@@ -283,6 +283,31 @@ def plot_time_scaling() -> None:
     save(fig, "time_scaling.png")
 
 
+def plot_knn_regions() -> None:
+    X, y = ml.make_blobs([(-2.0, -2.0), (2.0, 2.0)], spread=0.7, n_per=60, seed=31)
+    X_train, X_test, y_train, y_test = ml.train_test_split(X, y, ratio=0.3, seed=6)
+    clf = ml.KNNClassifier(k=5).fit(X_train, y_train)
+
+    grid = np.linspace(-4.5, 4.5, 90)
+    xx, yy = np.meshgrid(grid, grid)
+    points = np.column_stack([xx.ravel(), yy.ravel()])
+    zz = clf.predict(points).reshape(xx.shape)
+
+    fig, ax = plt.subplots(figsize=(7, 6))
+    ax.contourf(xx, yy, zz, levels=[-0.5, 0.5, 1.5], colors=["tab:blue", "tab:orange"], alpha=0.25)
+    ax.scatter(X_train[y_train == 0, 0], X_train[y_train == 0, 1], c="tab:blue", s=18, label="class 0 train")
+    ax.scatter(X_train[y_train == 1, 0], X_train[y_train == 1, 1], c="tab:orange", s=18, label="class 1 train")
+    ax.scatter(
+        X_test[:, 0], X_test[:, 1], c=y_test, cmap="bwr", edgecolors="k", s=40, marker="s", label="test points"
+    )
+    ax.set_xlabel("x1")
+    ax.set_ylabel("x2")
+    ax.set_title("k-NN (k = 5) decision regions on two Gaussian blobs")
+    ax.legend(loc="upper left")
+    fig.tight_layout()
+    save(fig, "knn_regions.png")
+
+
 def main() -> None:
     for out_dir in OUT_DIRS:
         os.makedirs(out_dir, exist_ok=True)
@@ -308,6 +333,8 @@ def main() -> None:
     print("wrote clt_demo.png")
     plot_time_scaling()
     print("wrote time_scaling.png")
+    plot_knn_regions()
+    print("wrote knn_regions.png")
 
 
 if __name__ == "__main__":

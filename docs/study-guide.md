@@ -35,6 +35,7 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | Fourier analysis | `calccode/fourier.py` | `notes/15-fourier.md` | `exercises/ex_fourier.py` |
 | Monte Carlo | `calccode/montecarlo.py` | `notes/16-monte-carlo.md` | `exercises/ex_montecarlo.py` |
 | Probability and statistics | `calccode/probability.py` | `notes/23-probability.md` | none yet |
+| Classical machine learning | `calccode/ml.py`, `calccode/regression.py` (ridge) | `notes/25-classical-ml.md` | none yet |
 | Interpolation | `calccode/interpolation.py` | `notes/17-interpolation.md` | `exercises/ex_interpolation.py` |
 | Eigenvalues | `calccode/eigen.py` | `notes/18-eigen.md` | `exercises/ex_eigen.py` |
 

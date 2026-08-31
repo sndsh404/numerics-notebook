@@ -33,7 +33,8 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/linalg.py` | Linear algebra | Matmul, determinant, Gaussian elimination, rank; no numpy.linalg |
 | `calccode/transforms.py` | Robotics transforms | Rotations, Rodrigues' formula, quaternions, planar arm kinematics |
 | `calccode/kinematics.py` | Robot kinematics | Screw theory, PoE forward kinematics, space and body Jacobians, damped least squares IK, time scaling |
-| `calccode/regression.py` | Machine learning | Least squares two ways, logistic regression |
+| `calccode/regression.py` | Machine learning | Least squares two ways, logistic regression, ridge closed form |
+| `calccode/ml.py` | Classical ML | Perceptron, k-NN, Gaussian naive Bayes, train/test split, k-fold, metrics |
 | `calccode/ode_systems.py` | ODE systems | Nonlinear pendulum, Lotka-Volterra, Lorenz attractor on RK4 |
 | `calccode/fourier.py` | Fourier analysis | Hand-written O(n^2) DFT, inverse, dominant frequency detection |
 | `calccode/montecarlo.py` | Monte Carlo | Xorshift RNG, 1D and n-D integration, pi estimation, importance sampling |
@@ -46,6 +47,10 @@ Each module has a matching file in `notes/` with study notes on what the code sh
 ![Cubic and quintic time scaling](docs/img/time_scaling.png)
 
 Position, velocity, and acceleration for a joint moving 1.5 rad in two seconds. Cubic scaling zeroes the endpoint velocity but jumps in acceleration; quintic zeroes both. From `calccode/kinematics.py`.
+
+![k-NN decision regions](docs/img/knn_regions.png)
+
+Decision regions of a 5-nearest-neighbor classifier on two Gaussian blobs, with held-out test points as squares. The boundary is piecewise linear and follows the data, no fitted equation involved. From `calccode/ml.py`.
 
 ![Central limit theorem demo](docs/img/clt_demo.png)
 
