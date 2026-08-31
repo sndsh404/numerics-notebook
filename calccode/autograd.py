@@ -22,7 +22,10 @@ class Value:
         self.data = float(data)
         self.grad = 0.0
         self._backward: Callable[[], None] = lambda: None
-        self._prev = set(_children)
+        # Deduplicated but kept in construction order: a set would make the
+        # backward accumulation order depend on object ids, and gradients
+        # would vary in the last bits from graph to graph.
+        self._prev = tuple(dict.fromkeys(_children))
 
     def __add__(self, other: "Value | float") -> "Value":
         other = _wrap(other)
@@ -114,18 +117,27 @@ class Value:
         return _wrap(other) + (-self)
 
     def backward(self) -> None:
-        """Populate .grad on every ancestor via reverse topological order."""
+        """Populate .grad on every ancestor via reverse topological order.
+
+        The topological sort is an explicit-stack depth first search, so
+        deep graphs cannot hit the recursion limit. Children are stored
+        in construction order, which fixes the accumulation sequence and
+        makes gradients bit-reproducible for identically built graphs.
+        """
         topo: list[Value] = []
         visited: set[Value] = set()
-
-        def build(v: Value) -> None:
-            if v not in visited:
-                visited.add(v)
-                for child in v._prev:
-                    build(child)
+        stack: list[tuple[Value, bool]] = [(self, False)]
+        while stack:
+            v, expanded = stack.pop()
+            if expanded:
                 topo.append(v)
-
-        build(self)
+                continue
+            if v in visited:
+                continue
+            visited.add(v)
+            stack.append((v, True))
+            for child in v._prev:
+                stack.append((child, False))
         self.grad = 1.0
         for v in reversed(topo):
             v._backward()
