@@ -1,4 +1,6 @@
-# Calculus to Code
+# numerics-notebook
+
+From-scratch math in Python: calculus, linear algebra, robotics, and machine learning.
 
 [![tests](https://github.com/sndsh404/numerics-notebook/actions/workflows/tests.yml/badge.svg)](https://github.com/sndsh404/numerics-notebook/actions/workflows/tests.yml)
 

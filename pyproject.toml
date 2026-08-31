@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "calccode"
 version = "0.1.0"
-description = "Calculus I topics implemented from scratch in Python"
+description = "From-scratch math in Python: calculus, linear algebra, robotics, ML"
 requires-python = ">=3.11"
 dependencies = ["numpy", "matplotlib"]
 
