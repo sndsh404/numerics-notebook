@@ -1,0 +1,9 @@
+# 11 Regression
+
+`calccode/regression.py` fits lines two ways. The closed form solves the normal equations (X^T X) w = X^T y using the Gaussian elimination from linalg.py. The iterative way is batch gradient descent with a hand-written MSE gradient. On the same noisy line dataset, the two answers agree to 1e-3.
+
+The closed form is one solve. The gradient descent takes 3000 steps to get to the same place. So why learn the slow way? Because the closed form requires inverting an n by n system once, which costs O(p^3) for p features and fails outright when X^T X is singular. Gradient descent only needs the gradient, works when p exceeds the sample count, and extends to losses with no closed form at all. Logistic regression is exactly that case: cross entropy has no closed form solution, so the same gradient loop with a different gradient is the only option on the table.
+
+Two things the tests taught me. First, the loss floor. With noise in the data, MSE converges to the noise variance and stops, about 0.065 on my synthetic set. An early test asserted the loss would shrink by six orders of magnitude. It cannot. The residual is the noise, and no weight vector removes it. Second, monotonicity is a float level statement. The loss decreases every step until convergence, then jitters at the 1e-17 level. Assertions about smooth decrease need a small tolerance or they fail on arithmetic noise.
+
+Where this breaks: normal equations square the condition number of X, so for ill conditioned features the closed form loses digits that an iterative method keeps. And gradient descent on raw features with wildly different scales crawls, the same narrow valley problem from gradient.py. Real pipelines standardize features first. Both estimators also assume the truth is linear, which it usually is not.
