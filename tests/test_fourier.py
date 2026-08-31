@@ -1,6 +1,7 @@
 import math
 
 import numpy as np
+import pytest
 
 from calccode import fourier
 from calccode.montecarlo import Xorshift32
@@ -63,3 +64,54 @@ def test_dft_matches_naive_matrix_product():
     k = np.arange(n)
     W = np.exp(-2j * math.pi * np.outer(k, k) / n)
     assert np.allclose(fourier.dft(signal), W @ signal, atol=1e-10)
+
+
+def test_fft_matches_dft_on_fixed_inputs():
+    rng = np.random.default_rng(11)
+    for n in (1, 2, 4, 8, 64, 256, 1024):
+        signal = rng.normal(size=n)
+        assert np.allclose(fourier.fft(signal), fourier.dft(signal), atol=1e-10)
+
+
+def test_fft_handles_complex_input():
+    rng = np.random.default_rng(3)
+    signal = rng.normal(size=128) + 1j * rng.normal(size=128)
+    assert np.allclose(fourier.fft(signal), fourier.dft(signal), atol=1e-10)
+
+
+def test_fft_rejects_non_power_of_2():
+    with pytest.raises(ValueError):
+        fourier.fft(np.ones(100))
+
+
+def test_pad_to_power_of_2():
+    signal = np.arange(100, dtype=float)
+    padded = fourier.pad_to_power_of_2(signal)
+    assert padded.size == 128
+    assert np.array_equal(padded[:100], signal)
+    assert np.all(padded[100:] == 0.0)
+    # Padded FFT equals the plain DFT of the padded signal.
+    assert np.allclose(fourier.fft(padded), fourier.dft(padded), atol=1e-10)
+
+
+def test_fft_ifft_round_trip():
+    rng = np.random.default_rng(6)
+    signal = rng.normal(size=512)
+    assert np.allclose(fourier.ifft(fourier.fft(signal)), signal, atol=1e-10)
+
+
+def test_fft_pure_tone_peak():
+    n = 64
+    signal = make_signal([(4.0, 2.0)], n=n, sample_rate=64.0)
+    coeffs = fourier.fft(signal)
+    assert abs(abs(coeffs[4]) - n) < 1e-8
+    for k in (1, 2, 3, 5, 6):
+        assert abs(coeffs[k]) < 1e-8
+
+
+def test_fft_vs_dft_sizes_returns_matching_coeffs():
+    # Correctness only: timing values are for the plot, not asserted.
+    sizes, dft_times, fft_times = fourier.fft_vs_dft_sizes([8, 16])
+    assert list(sizes) == [8, 16]
+    assert dft_times.shape == fft_times.shape == (2,)
+    assert np.all(dft_times > 0.0) and np.all(fft_times > 0.0)

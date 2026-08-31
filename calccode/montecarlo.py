@@ -38,6 +38,32 @@ class Xorshift32:
         return np.array([self.uniform() for _ in range(n)])
 
 
+class WeakLCG:
+    """RANDU: x_{n+1} = 65539 x_n mod 2^31. Deliberately bad.
+
+    The classic cautionary generator. Consecutive triples of its output
+    lie on 15 planes in the unit cube, so a 3D scatter shows sheets
+    instead of a cloud. Kept for the lattice figure; never used for
+    integration.
+    """
+
+    def __init__(self, seed: int = 42):
+        if seed <= 0:
+            raise ValueError("seed must be a positive integer")
+        self.state = seed % 2**31 or 1
+
+    def next_uint(self) -> int:
+        self.state = (65539 * self.state) % 2**31
+        return self.state
+
+    def uniform(self) -> float:
+        """Uniform on [0, 1)."""
+        return self.next_uint() / 2**31
+
+    def uniforms(self, n: int) -> np.ndarray:
+        return np.array([self.uniform() for _ in range(n)])
+
+
 def mc_integrate_1d(
     f: Callable[[float], float], a: float, b: float, n: int, seed: int = 42
 ) -> float:

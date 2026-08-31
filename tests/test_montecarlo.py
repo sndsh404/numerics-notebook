@@ -69,3 +69,25 @@ def test_importance_sampling_beats_uniform():
     uniform_err = abs(montecarlo.integrate_inv_sqrt_uniform(5000, seed=5) - 2.0)
     importance_err = abs(montecarlo.integrate_inv_sqrt_importance(5000, seed=5) - 2.0)
     assert importance_err < uniform_err / 100.0
+
+
+def test_weak_lcg_is_deterministic():
+    a = montecarlo.WeakLCG(7).uniforms(5)
+    b = montecarlo.WeakLCG(7).uniforms(5)
+    assert np.array_equal(a, b)
+    assert np.all((a >= 0.0) & (a < 1.0))
+
+
+def test_weak_lcg_triples_lie_on_few_planes():
+    # RANDU's flaw: 65539 = 2^16 + 3, and 65539^2 = 6*65539 - 9 mod 2^31
+    # because the 2^32 term vanishes mod 2^31. Consecutive triples
+    # therefore satisfy z = (6 y - 9 x) mod 1 and sit on a few planes.
+    rng = montecarlo.WeakLCG(3)
+    us = rng.uniforms(3 * 2000)
+    x, y, z = us[0::3], us[1::3], us[2::3]
+    combos = 6.0 * y - 9.0 * x - z
+    ks = np.round(combos)
+    # k ranges over a small integer set, and the residual is roundoff-level.
+    resid = np.abs(combos - ks)
+    assert resid.max() < 1e-9
+    assert len(np.unique(ks)) <= 15
