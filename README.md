@@ -9,6 +9,7 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 ## Contents
 
 - [Modules](#modules)
+- [See it in ten seconds](#see-it-in-ten-seconds)
 - [Exercises](#exercises)
 - [Figures](#figures)
 - [Quickstart](#quickstart)
@@ -60,6 +61,20 @@ Decision regions of a 5-nearest-neighbor classifier on two Gaussian blobs, with 
 ![Central limit theorem demo](docs/img/clt_demo.png)
 
 Exponential population on the left, means of 30 draws on the right, with the normal curve the CLT predicts overlaid. From `calccode/probability.py`.
+
+## See it in ten seconds
+
+Every module has a one-screen demo. Run one with no install steps beyond the requirements:
+
+```bash
+$ python -m calccode.demo derivatives
+d/dx sin(x) at x = 1, exact cos(1) = 0.540302, h = 1e-3:
+  forward difference error: 4.208e-04
+  central difference error: 9.005e-08
+  central is O(h^2), here 4673x more accurate
+```
+
+`python -m calccode.demo` with no arguments lists the topics: limits, derivatives, integrals, series, ode, fft, linalg, orthogonal, eigen, optimize, ml, kinematics, probability, montecarlo.
 
 ## Exercises
 
