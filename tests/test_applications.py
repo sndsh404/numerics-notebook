@@ -2,6 +2,8 @@ import math
 
 from calccode.applications import (
     arc_length,
+    arc_length_parametric,
+    arc_length_polar,
     arc_length_trig_circle,
     surface_area,
     volume_disk,
@@ -74,3 +76,28 @@ def test_shell_method_matches_disk_method():
     cone = math.pi * R**3 / 3.0
     assert abs(shell - 2.0 / 3.0 * math.pi * R**3) < 1e-9
     assert abs(shell - (cylinder - cone)) < 1e-9
+
+
+def test_parametric_arc_length_circle():
+    # x = r cos(t), y = r sin(t) on [0, 2 pi]: the full circumference.
+    got = arc_length_parametric(lambda t: R * math.cos(t), lambda t: R * math.sin(t), 0.0, 2.0 * math.pi, 200)
+    assert abs(got - 2.0 * math.pi * R) < 1e-9
+
+
+def test_parametric_arc_length_helix_like_segment():
+    # x = 3t, y = 4t on [0, 2]: a straight line of length 10.
+    got = arc_length_parametric(lambda t: 3.0 * t, lambda t: 4.0 * t, 0.0, 2.0, 100)
+    assert abs(got - 10.0) < 1e-9
+
+
+def test_polar_arc_length_circle():
+    # r = const gives integrand r, so the length over [0, 2 pi] is 2 pi r.
+    got = arc_length_polar(lambda theta: R, 0.0, 2.0 * math.pi, 200)
+    assert abs(got - 2.0 * math.pi * R) < 1e-9
+
+
+def test_polar_arc_length_cardioid():
+    # r = 1 + cos(theta) on [0, 2 pi] has closed-form length 8:
+    # the integrand simplifies to 2 |cos(theta/2)|.
+    got = arc_length_polar(lambda theta: 1.0 + math.cos(theta), 0.0, 2.0 * math.pi, 4000)
+    assert abs(got - 8.0) < 1e-6

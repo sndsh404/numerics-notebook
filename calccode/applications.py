@@ -67,3 +67,38 @@ def arc_length_trig_circle(r: float, n: int = 200) -> float:
     is pi r to machine precision.
     """
     return simpson(lambda t: r, -math.pi / 2.0, math.pi / 2.0, n)
+
+
+def arc_length_parametric(
+    x: Callable[[float], float],
+    y: Callable[[float], float],
+    a: float,
+    b: float,
+    n: int = 1000,
+) -> float:
+    """Length of the parametric curve (x(t), y(t)) from a to b.
+
+    Integral of sqrt((dx/dt)^2 + (dy/dt)^2). No endpoint singularities
+    as long as x and y are smooth, which is why a circle parametrized
+    by angle is easier than the same circle as y = f(x).
+    """
+    def integrand(t: float) -> float:
+        dx = central_diff(x, t)
+        dy = central_diff(y, t)
+        return math.sqrt(dx * dx + dy * dy)
+
+    return simpson(integrand, a, b, n)
+
+
+def arc_length_polar(r: Callable[[float], float], a: float, b: float, n: int = 1000) -> float:
+    """Length of the polar curve r = r(theta) from a to b.
+
+    Writing x = r cos(theta), y = r sin(theta) and differentiating gives
+    the integrand sqrt(r^2 + (dr/dtheta)^2).
+    """
+    def integrand(theta: float) -> float:
+        r_val = r(theta)
+        dr = central_diff(r, theta)
+        return math.sqrt(r_val * r_val + dr * dr)
+
+    return simpson(integrand, a, b, n)

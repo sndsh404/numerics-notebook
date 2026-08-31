@@ -21,7 +21,7 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/symbolic.py` | Symbolic differentiation | Expression trees, `diff()` with power, product, and chain rules |
 | `calccode/integrals.py` | Integration | Riemann sums, trapezoid, Simpson, empirical order checks |
 | `calccode/symbolic_integrate.py` | Symbolic integration | Rule-based antiderivatives, linear u-substitution, integration by parts, FTC definite integrals, Simpson fallback |
-| `calccode/applications.py` | Applications of integration | Arc length (trig substitution for the circle), disk and shell volumes, surface area of revolution |
+| `calccode/applications.py` | Applications of integration | Arc length (cartesian, parametric, polar), disk and shell volumes, surface area of revolution |
 | `calccode/related_rates.py` | Related rates | Chain rule in time on relation trees, linear solve for one unknown rate |
 | `calccode/series.py` | Series | Taylor polynomials, partial sums, numeric ratio test |
 | `calccode/convergence.py` | Series convergence | Alternating error bound, integral test, comparison test, p-series verdict |
@@ -33,6 +33,7 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/linalg.py` | Linear algebra | Matmul, determinant, Gaussian elimination, rank; no numpy.linalg |
 | `calccode/transforms.py` | Robotics transforms | Rotations, Rodrigues' formula, quaternions, planar arm kinematics |
 | `calccode/kinematics.py` | Robot kinematics | Screw theory, PoE forward kinematics, space and body Jacobians, damped least squares IK, time scaling |
+| `calccode/dynamics.py` | Robot dynamics | 2-link planar arm Lagrangian: mass matrix, Coriolis and gravity vectors, forward dynamics |
 | `calccode/regression.py` | Machine learning | Least squares two ways, logistic regression, ridge closed form |
 | `calccode/ml.py` | Classical ML | Perceptron, k-NN, Gaussian naive Bayes, train/test split, k-fold, metrics |
 | `calccode/ode_systems.py` | ODE systems | Nonlinear pendulum, Lotka-Volterra, Lorenz attractor on RK4 |
@@ -42,7 +43,7 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/interpolation.py` | Interpolation | Barycentric Lagrange, divided differences, cubic splines, Chebyshev nodes |
 | `calccode/eigen.py` | Eigenvalues | Power iteration, inverse iteration with shift, deflation |
 
-Each module has a matching file in `notes/` with study notes on what the code shows and where it breaks. For a topic-by-topic checklist against a Calculus I/II syllabus, see [docs/study-guide.md](docs/study-guide.md).
+Each module has a matching file in `notes/` with study notes on what the code shows and where it breaks. [docs/modules.md](docs/modules.md) maps every module to its note, test file, and exercise. For a topic-by-topic checklist against a Calculus I/II syllabus, see [docs/study-guide.md](docs/study-guide.md).
 
 ![Cubic and quintic time scaling](docs/img/time_scaling.png)
 

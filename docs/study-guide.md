@@ -21,6 +21,7 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | Integration by parts | `calccode/symbolic_integrate.py` (x times sin, cos, exp, and ln via 1 * ln x) | `notes/19-symbolic-integration.md` | none yet |
 | u-substitution (linear inner function) | `calccode/symbolic_integrate.py` (f(a*x + b) for sin, cos, exp, powers) | `notes/19-symbolic-integration.md` | none yet |
 | Arc length and surface area | `calccode/applications.py` | `notes/20-applications.md` | `exercises/ex_applications.py` |
+| Polar and parametric arc length | `calccode/applications.py` | `notes/27-polar-parametric-arc-length.md` | none yet |
 | Volumes of revolution (disk, shell) | `calccode/applications.py` | `notes/20-applications.md` | `exercises/ex_applications.py` |
 | Series convergence | `calccode/convergence.py` | `notes/22-series-convergence.md` | `exercises/ex_series.py` |
 | Taylor polynomials | `calccode/series.py` | `notes/08-series.md` | `exercises/ex_series.py` |
@@ -32,6 +33,7 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | Linear algebra | `calccode/linalg.py` | `notes/09-linalg.md` | `exercises/ex_linalg.py` |
 | Robotics transforms | `calccode/transforms.py` | `notes/10-transforms.md` | `exercises/ex_transforms.py` |
 | Robot kinematics (screw theory) | `calccode/kinematics.py` | `notes/24-modern-robotics.md` | none yet |
+| Robot dynamics (2-link Lagrangian) | `calccode/dynamics.py` | `notes/26-dynamics.md` | none yet |
 | Fourier analysis | `calccode/fourier.py` | `notes/15-fourier.md` | `exercises/ex_fourier.py` |
 | Monte Carlo | `calccode/montecarlo.py` | `notes/16-monte-carlo.md` | `exercises/ex_montecarlo.py` |
 | Probability and statistics | `calccode/probability.py` | `notes/23-probability.md` | none yet |
