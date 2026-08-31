@@ -1,6 +1,11 @@
-"""Regenerate the Calc II and ML plots into plots/. Run from the project root:
+"""Regenerate the Calc II and ML plots into plots/ and docs/img/.
+
+Run from the project root:
 
     python scripts/make_plots_2.py
+
+plots/ is the gitignored scratch dir; docs/img/ holds the tracked copies
+that README.md embeds.
 """
 
 from __future__ import annotations
@@ -23,7 +28,14 @@ from calccode.integrals import convergence_study
 from calccode.series import taylor_coefficients_from_expr, taylor_error, taylor_polynomial
 from calccode.symbolic import Sin, Var
 
-PLOTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "plots")
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT_DIRS = [os.path.join(ROOT, "plots"), os.path.join(ROOT, "docs", "img")]
+
+
+def save(fig: plt.Figure, name: str) -> None:
+    for out_dir in OUT_DIRS:
+        fig.savefig(os.path.join(out_dir, name), dpi=120)
+    plt.close(fig)
 
 
 def plot_quadrature_convergence() -> None:
@@ -42,8 +54,7 @@ def plot_quadrature_convergence() -> None:
     ax.set_title("Quadrature error on exp over [0, 1]")
     ax.legend()
     fig.tight_layout()
-    fig.savefig(os.path.join(PLOTS_DIR, "quadrature_convergence.png"), dpi=120)
-    plt.close(fig)
+    save(fig, "quadrature_convergence.png")
 
 
 def plot_taylor_sin() -> None:
@@ -71,8 +82,7 @@ def plot_taylor_sin() -> None:
     ax2.legend()
 
     fig.tight_layout()
-    fig.savefig(os.path.join(PLOTS_DIR, "taylor_sin.png"), dpi=120)
-    plt.close(fig)
+    save(fig, "taylor_sin.png")
 
 
 def plot_arm() -> None:
@@ -91,8 +101,7 @@ def plot_arm() -> None:
     ax.set_title("2-link planar arm poses (l1 = 2, l2 = 1)")
     ax.legend()
     fig.tight_layout()
-    fig.savefig(os.path.join(PLOTS_DIR, "arm_poses.png"), dpi=120)
-    plt.close(fig)
+    save(fig, "arm_poses.png")
 
 
 def plot_least_squares() -> None:
@@ -119,12 +128,12 @@ def plot_least_squares() -> None:
     ax2.set_title("Gradient descent convergence")
 
     fig.tight_layout()
-    fig.savefig(os.path.join(PLOTS_DIR, "least_squares.png"), dpi=120)
-    plt.close(fig)
+    save(fig, "least_squares.png")
 
 
 def main() -> None:
-    os.makedirs(PLOTS_DIR, exist_ok=True)
+    for out_dir in OUT_DIRS:
+        os.makedirs(out_dir, exist_ok=True)
     plot_quadrature_convergence()
     print("wrote quadrature_convergence.png")
     plot_taylor_sin()

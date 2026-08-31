@@ -1,6 +1,9 @@
-"""Regenerate every plot into plots/. Run from the project root:
+"""Regenerate every plot into plots/ and docs/img/. Run from the project root:
 
     python scripts/make_plots.py
+
+plots/ is the gitignored scratch dir; docs/img/ holds the tracked copies
+that README.md embeds.
 """
 
 from __future__ import annotations
@@ -23,7 +26,14 @@ from calccode.derivatives import convergence_study
 from calccode.gradient import gradient_descent
 from calccode.integrators import euler, oscillator_energy, rk4, semi_implicit_euler
 
-PLOTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "plots")
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT_DIRS = [os.path.join(ROOT, "plots"), os.path.join(ROOT, "docs", "img")]
+
+
+def save(fig: plt.Figure, name: str) -> None:
+    for out_dir in OUT_DIRS:
+        fig.savefig(os.path.join(out_dir, name), dpi=120)
+    plt.close(fig)
 
 
 def plot_fd_convergence() -> None:
@@ -40,8 +50,7 @@ def plot_fd_convergence() -> None:
     ax.set_title("Finite difference error vs step size")
     ax.legend()
     fig.tight_layout()
-    fig.savefig(os.path.join(PLOTS_DIR, "fd_convergence.png"), dpi=120)
-    plt.close(fig)
+    save(fig, "fd_convergence.png")
 
 
 def plot_integrators() -> None:
@@ -74,8 +83,7 @@ def plot_integrators() -> None:
     ax2.legend()
 
     fig.tight_layout()
-    fig.savefig(os.path.join(PLOTS_DIR, "integrators.png"), dpi=120)
-    plt.close(fig)
+    save(fig, "integrators.png")
 
 
 def plot_gradient_descent() -> None:
@@ -101,8 +109,7 @@ def plot_gradient_descent() -> None:
     ax.set_title("Gradient descent paths on a 2D bowl")
     ax.legend()
     fig.tight_layout()
-    fig.savefig(os.path.join(PLOTS_DIR, "gradient_descent.png"), dpi=120)
-    plt.close(fig)
+    save(fig, "gradient_descent.png")
 
 
 def plot_autograd_fit() -> None:
@@ -128,12 +135,12 @@ def plot_autograd_fit() -> None:
     ax2.legend()
 
     fig.tight_layout()
-    fig.savefig(os.path.join(PLOTS_DIR, "autograd_fit.png"), dpi=120)
-    plt.close(fig)
+    save(fig, "autograd_fit.png")
 
 
 def main() -> None:
-    os.makedirs(PLOTS_DIR, exist_ok=True)
+    for out_dir in OUT_DIRS:
+        os.makedirs(out_dir, exist_ok=True)
     plot_fd_convergence()
     print("wrote fd_convergence.png")
     plot_integrators()
