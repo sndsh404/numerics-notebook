@@ -23,7 +23,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from calccode import fourier, interpolation, montecarlo, ode_systems, probability, regression, transforms
+from calccode import fourier, interpolation, kinematics, montecarlo, ode_systems, probability, regression, transforms
 from calccode.integrals import convergence_study
 from calccode.series import taylor_coefficients_from_expr, taylor_error, taylor_polynomial
 from calccode.symbolic import Sin, Var
@@ -260,6 +260,29 @@ def plot_clt_demo() -> None:
     save(fig, "clt_demo.png")
 
 
+def plot_time_scaling() -> None:
+    start = np.array([0.0])
+    final = np.array([1.5])
+    Tf = 2.0
+    cubic = kinematics.joint_trajectory(start, final, Tf, 200, method="cubic")
+    quintic = kinematics.joint_trajectory(start, final, Tf, 200, method="quintic")
+
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(14, 4))
+    for ax, key, title in (
+        (ax1, "positions", "position theta(t)"),
+        (ax2, "velocities", "velocity"),
+        (ax3, "accelerations", "acceleration"),
+    ):
+        ax.plot(cubic["times"], cubic[key][:, 0], "--", color="tab:red", label="cubic")
+        ax.plot(quintic["times"], quintic[key][:, 0], "-", color="tab:blue", label="quintic")
+        ax.set_xlabel("t (s)")
+        ax.set_title(title)
+    ax1.legend()
+    fig.suptitle("Joint move of 1.5 rad in 2 s: cubic vs quintic time scaling")
+    fig.tight_layout()
+    save(fig, "time_scaling.png")
+
+
 def main() -> None:
     for out_dir in OUT_DIRS:
         os.makedirs(out_dir, exist_ok=True)
@@ -283,6 +306,8 @@ def main() -> None:
     print("wrote monte_carlo_scaling.png")
     plot_clt_demo()
     print("wrote clt_demo.png")
+    plot_time_scaling()
+    print("wrote time_scaling.png")
 
 
 if __name__ == "__main__":

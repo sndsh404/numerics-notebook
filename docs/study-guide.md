@@ -31,6 +31,7 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | --- | --- | --- | --- |
 | Linear algebra | `calccode/linalg.py` | `notes/09-linalg.md` | `exercises/ex_linalg.py` |
 | Robotics transforms | `calccode/transforms.py` | `notes/10-transforms.md` | `exercises/ex_transforms.py` |
+| Robot kinematics (screw theory) | `calccode/kinematics.py` | `notes/24-modern-robotics.md` | none yet |
 | Fourier analysis | `calccode/fourier.py` | `notes/15-fourier.md` | `exercises/ex_fourier.py` |
 | Monte Carlo | `calccode/montecarlo.py` | `notes/16-monte-carlo.md` | `exercises/ex_montecarlo.py` |
 | Probability and statistics | `calccode/probability.py` | `notes/23-probability.md` | none yet |
