@@ -1,45 +1,69 @@
 # Calculus to Code
 
-I am learning calculus and the math behind robotics and machine learning. This repo is how I study: I implement every topic from scratch in Python. It started as Calculus I prep for the CLEP exam in December, then grew to cover Calc II topics from Stewart and Strang, linear algebra for neural networks, rigid body transforms from Modern Robotics, and basic regression.
+[![tests](https://github.com/sndsh404/numerics-notebook/actions/workflows/tests.yml/badge.svg)](https://github.com/sndsh404/numerics-notebook/actions/workflows/tests.yml)
 
-The rule of the repo: numpy is allowed for arrays and plotting data, but no library does the math for me. No scipy, no sympy, no numpy.linalg, no numpy.gradient. Every derivative, integral, matrix solve, and gradient step is hand-written.
+A study repository that implements calculus, linear algebra, rigid body transforms, and basic machine learning from scratch in Python. The rule: numpy is allowed for arrays and plotting data, but no library does the math. No scipy, no sympy, no numpy.linalg, no numpy.gradient. Every derivative, integral, matrix solve, and gradient step is hand-written, and every module has pytest coverage.
 
-The repo also doubles as a portfolio piece for robotics and simulation work, so the code has type hints, docstrings where they earn their place, and pytest coverage for every module.
+## Contents
 
-## Layout
+- [Modules](#modules)
+- [Figures](#figures)
+- [Quickstart](#quickstart)
+- [License](#license)
 
-Calculus:
+## Modules
 
-- `calccode/limits.py`: numerical limits, one-sided limits, divergence and oscillation detection
-- `calccode/derivatives.py`: forward, backward, and central differences plus a convergence study
-- `calccode/symbolic.py`: expression trees and a hand-written `diff()` with the power, product, and chain rules
-- `calccode/integrals.py`: Riemann sums, trapezoid, and Simpson with empirical order checks
-- `calccode/series.py`: Taylor polynomials, partial sums, and a numeric ratio test
-- `calccode/integrators.py`: explicit Euler, semi-implicit Euler, and RK4 for ODEs
-- `calccode/gradient.py`: gradient descent in 1D and 2D on central differences
-- `calccode/autograd.py`: scalar reverse-mode autograd and a small MLP that fits sin(x)
+| Module | Topic | What it implements |
+| --- | --- | --- |
+| `calccode/limits.py` | Limits | Numerical limits from both sides, divergence and oscillation detection |
+| `calccode/derivatives.py` | Derivatives | Forward, backward, central differences, convergence order fitting |
+| `calccode/symbolic.py` | Symbolic differentiation | Expression trees, `diff()` with power, product, and chain rules |
+| `calccode/integrals.py` | Integration | Riemann sums, trapezoid, Simpson, empirical order checks |
+| `calccode/series.py` | Series | Taylor polynomials, partial sums, numeric ratio test |
+| `calccode/integrators.py` | ODEs | Explicit Euler, semi-implicit Euler, RK4 |
+| `calccode/optimize.py` | Root finding | Bisection, Newton, secant, with iteration histories |
+| `calccode/multivar.py` | Multivariable calculus | Partials, gradient, Jacobian, Hessian, gradient checking |
+| `calccode/gradient.py` | Gradient descent | 1D and 2D descent on central differences, learning rate study |
+| `calccode/autograd.py` | Autodiff | Scalar reverse-mode autograd, MLP that fits sin(x) |
+| `calccode/linalg.py` | Linear algebra | Matmul, determinant, Gaussian elimination, rank; no numpy.linalg |
+| `calccode/transforms.py` | Robotics transforms | Rotations, Rodrigues' formula, quaternions, planar arm kinematics |
+| `calccode/regression.py` | Machine learning | Least squares two ways, logistic regression |
 
-Linear algebra and robotics:
+Each module has a matching file in `notes/` with study notes on what the code shows and where it breaks.
 
-- `calccode/linalg.py`: matmul, determinant, Gaussian elimination solve, and rank, all hand-written
-- `calccode/transforms.py`: 2D and 3D rotations, Rodrigues' formula, homogeneous transforms, quaternions, planar arm kinematics
+## Figures
 
-Machine learning:
+All figures regenerate with the two scripts in `scripts/`.
 
-- `calccode/regression.py`: least squares by normal equations and by gradient descent, plus logistic regression
+![Finite difference error vs step size](docs/img/fd_convergence.png)
 
-Also:
+Forward and central difference errors on sin(x), with the roundoff floor below h = 1e-6.
 
-- `notes/`: my study notes, one per module
-- `scripts/make_plots.py`: regenerates the calculus plots into `plots/`
-- `scripts/make_plots_2.py`: regenerates the Calc II and ML plots into `plots/`
+![ODE integrator comparison](docs/img/integrators.png)
 
-## Run it
+Euler against RK4 on exponential decay, and harmonic oscillator energy over 10000 steps.
+
+![Taylor approximations of sin](docs/img/taylor_sin.png)
+
+Taylor polynomials of growing degree, and how the error grows away from the expansion point.
+
+![Planar arm poses](docs/img/arm_poses.png)
+
+Forward kinematics of a 2-link planar arm at three joint configurations.
+
+## Quickstart
 
 ```bash
+git clone https://github.com/sndsh404/numerics-notebook.git
+cd numerics-notebook
+pip install -r requirements.txt
 python -m pytest tests/ -q
 python scripts/make_plots.py
 python scripts/make_plots_2.py
 ```
 
-Plots land in `plots/`, which is gitignored.
+The plot scripts write to `plots/` (gitignored scratch) and `docs/img/` (tracked copies shown above).
+
+## License
+
+MIT. See [LICENSE](LICENSE).
