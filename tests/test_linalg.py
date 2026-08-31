@@ -63,6 +63,13 @@ def test_rank_counts_independent_rows():
     assert linalg.rank(A) == 2
 
 
+def test_rank_tol_changes_effective_rank():
+    # Elimination leaves a 0.025 second pivot: real, but noise at tol=1e-1.
+    A = np.array([[1.0, 2.0], [2.0, 4.05]])
+    assert linalg.rank(A, tol=1e-10) == 2
+    assert linalg.rank(A, tol=1e-1) == 1
+
+
 def test_identity_is_neutral():
     A = np.array([[1.0, 2.0], [3.0, 4.0]])
     assert np.allclose(linalg.matmul(linalg.identity(2), A), A)

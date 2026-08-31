@@ -57,13 +57,15 @@ def trace(A: np.ndarray) -> float:
     return float(sum(A[i, i] for i in range(A.shape[0])))
 
 
-def _eliminate(M: np.ndarray) -> tuple[np.ndarray, int, int]:
+def _eliminate(M: np.ndarray, tol: float = 1e-12) -> tuple[np.ndarray, int, int]:
     """Forward elimination with partial pivoting.
 
     Returns the upper triangular result, the number of row swaps, and
-    the number of nonzero pivots found. Rows are only swapped and
-    reduced by row_i -= factor * row_pivot, never scaled, so the product
-    of the diagonal times (-1)^swaps is the determinant.
+    the number of nonzero pivots found. A column counts as a pivot when
+    its largest entry is at least tol times the largest entry of the
+    input. Rows are only swapped and reduced by row_i -= factor *
+    row_pivot, never scaled, so the product of the diagonal times
+    (-1)^swaps is the determinant.
     """
     U = M.astype(float).copy()
     rows, cols = U.shape
@@ -72,7 +74,7 @@ def _eliminate(M: np.ndarray) -> tuple[np.ndarray, int, int]:
     scale = max(1.0, float(np.max(np.abs(U))))
     for col in range(min(rows, cols)):
         pivot = col + int(np.argmax(np.abs(U[col:, col])))
-        if abs(U[pivot, col]) < 1e-12 * scale:
+        if abs(U[pivot, col]) < tol * scale:
             continue
         if pivot != col:
             U[[col, pivot]] = U[[pivot, col]]
@@ -127,9 +129,13 @@ def solve(A: np.ndarray, b: np.ndarray) -> np.ndarray:
 
 
 def rank(A: np.ndarray, tol: float = 1e-10) -> int:
-    """Number of nonzero pivots after elimination."""
+    """Number of pivots at least tol times the largest entry of A.
+
+    Pivots below that relative size are treated as numerical noise, so
+    larger tol values report a lower effective rank.
+    """
     A = _as_matrix(A)
-    _, _, pivots = _eliminate(A)
+    _, _, pivots = _eliminate(A, tol)
     return pivots
 
 
