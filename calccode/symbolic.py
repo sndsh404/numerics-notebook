@@ -223,6 +223,19 @@ def partial(expr: Expr, var: str) -> Expr:
     return expr.diff(var).simplify()
 
 
+def implicit_diff(dFdx: Expr, dFdy: Expr) -> Expr:
+    """dy/dx for a curve defined by F(x, y) = 0, given the partials.
+
+    The caller computes the partials first, usually with partial(F, "x")
+    and partial(F, "y") on a tree that holds both a Var("x") and a
+    Var("y"). This returns the tree for -Fx / Fy, written as a product
+    with Fy to the power -1 to match the rest of the module. The trees
+    stay symbolic; eval() only handles one variable, so use eval_multi
+    with values for both names to get a number out.
+    """
+    return Mul(Mul(Const(-1.0), dFdx), Pow(dFdy, Const(-1.0))).simplify()
+
+
 def eval_multi(expr: Expr, env: dict[str, float]) -> float:
     """Evaluate a tree with one value per variable name.
 
