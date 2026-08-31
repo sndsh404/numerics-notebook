@@ -34,6 +34,16 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 
 Each module has a matching file in `notes/` with study notes on what the code shows and where it breaks.
 
+## Exercises
+
+The `exercises/` folder has one file per topic with the function bodies removed. The study loop: read the note, implement the exercise, run its test, compare against the reference in `calccode/`.
+
+```bash
+python -m pytest tests/test_exercises.py --run-exercises
+```
+
+Exercise tests skip by default so the main suite stays green while exercises are unsolved. See `exercises/README.md` for details.
+
 ## Figures
 
 All figures regenerate with the two scripts in `scripts/`.
