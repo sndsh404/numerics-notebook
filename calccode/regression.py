@@ -40,6 +40,25 @@ def ols_closed_form(X: np.ndarray, y: np.ndarray) -> np.ndarray:
     return linalg.solve(XtX, Xty)
 
 
+def ridge_closed_form(X: np.ndarray, y: np.ndarray, lam: float = 1.0) -> np.ndarray:
+    """Ridge weights from (X^T X + lam I) w = X^T y on the augmented design.
+
+    The intercept sits in the augmented column, so it gets penalized along
+    with the slopes. lam = 0 reduces to the plain normal equations, and
+    larger lam pulls every weight toward zero, which is what rescues the
+    solve when the columns of X are nearly collinear.
+    """
+    if lam < 0.0:
+        raise ValueError("lam must be nonnegative")
+    X, y = _as_design(X, y)
+    Xa = _augment(X)
+    XtX = linalg.matmul(linalg.transpose(Xa), Xa)
+    Xty = linalg.matmul(linalg.transpose(Xa), y.reshape(-1, 1)).ravel()
+    p = XtX.shape[0]
+    A = XtX + lam * linalg.identity(p)
+    return linalg.solve(A, Xty)
+
+
 def _mse_grad(Xa: np.ndarray, y: np.ndarray, w: np.ndarray) -> np.ndarray:
     n = Xa.shape[0]
     residual = linalg.matmul(Xa, w.reshape(-1, 1)).ravel() - y
