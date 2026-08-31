@@ -196,6 +196,41 @@ def plot_fourier_spectrum() -> None:
     save(fig, "fourier_spectrum.png")
 
 
+def plot_fft_vs_dft() -> None:
+    sizes, dft_times, fft_times = fourier.fft_vs_dft_sizes([64, 128, 256, 512, 1024, 2048])
+    n = sizes.astype(float)
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.loglog(sizes, dft_times, "o-", color="tab:red", label="dft, O(n^2)")
+    ax.loglog(sizes, fft_times, "s-", color="tab:blue", label="fft, O(n log n)")
+    ax.loglog(sizes, dft_times[0] * (n / n[0]) ** 2, ":", color="gray", label="reference n^2")
+    ax.loglog(sizes, fft_times[0] * (n / n[0]) * np.log2(n / n[0]), "--", color="gray", label="reference n log n")
+    ax.set_xlabel("signal length n")
+    ax.set_ylabel("wall time (s)")
+    ax.set_title("DFT vs FFT wall time")
+    ax.legend()
+    fig.tight_layout()
+    save(fig, "fft_vs_dft.png")
+
+
+def plot_rng_lattice() -> None:
+    n = 30000
+    xorshift = montecarlo.Xorshift32(7).uniforms(3 * n).reshape(-1, 3)
+    lcg = montecarlo.WeakLCG(7).uniforms(3 * n).reshape(-1, 3)
+
+    fig = plt.figure(figsize=(12, 5))
+    ax1 = fig.add_subplot(121, projection="3d")
+    ax1.scatter(xorshift[:, 0], xorshift[:, 1], xorshift[:, 2], s=0.3, c="tab:blue")
+    ax1.view_init(elev=10, azim=56)
+    ax1.set_title("xorshift32 triples")
+    ax2 = fig.add_subplot(122, projection="3d")
+    ax2.scatter(lcg[:, 0], lcg[:, 1], lcg[:, 2], s=0.3, c="tab:red")
+    ax2.view_init(elev=10, azim=56)
+    ax2.set_title("RANDU triples: 15 planes")
+    fig.tight_layout()
+    save(fig, "rng_lattice.png")
+
+
 def plot_runge_phenomenon() -> None:
     f = lambda x: 1.0 / (1.0 + 25.0 * x * x)
     n = 15
@@ -335,10 +370,14 @@ def main() -> None:
     print("wrote lorenz_divergence.png")
     plot_fourier_spectrum()
     print("wrote fourier_spectrum.png")
+    plot_fft_vs_dft()
+    print("wrote fft_vs_dft.png")
     plot_runge_phenomenon()
     print("wrote runge_phenomenon.png")
     plot_monte_carlo_scaling()
     print("wrote monte_carlo_scaling.png")
+    plot_rng_lattice()
+    print("wrote rng_lattice.png")
     plot_clt_demo()
     print("wrote clt_demo.png")
     plot_time_scaling()

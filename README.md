@@ -25,7 +25,7 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/related_rates.py` | Related rates | Chain rule in time on relation trees, linear solve for one unknown rate |
 | `calccode/series.py` | Series | Taylor polynomials, partial sums, numeric ratio test |
 | `calccode/convergence.py` | Series convergence | Alternating error bound, integral test, comparison test, p-series verdict |
-| `calccode/integrators.py` | ODEs | Explicit Euler, semi-implicit Euler, RK4 |
+| `calccode/integrators.py` | ODEs | Explicit Euler, semi-implicit Euler, RK4, adaptive RK45 (Dormand-Prince), backward Euler for stiff problems |
 | `calccode/optimize.py` | Root finding and minimization | Bisection, Newton, secant; golden section, Armijo line search, Newton and BFGS minimizers, momentum, Nesterov, Adam |
 | `calccode/multivar.py` | Multivariable calculus | Partials, gradient, Jacobian, Hessian, gradient checking |
 | `calccode/gradient.py` | Gradient descent | 1D and 2D descent on central differences, learning rate study |
@@ -37,8 +37,8 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/regression.py` | Machine learning | Least squares two ways, logistic regression, ridge closed form |
 | `calccode/ml.py` | Classical ML | Perceptron, k-NN, Gaussian naive Bayes, train/test split, k-fold, metrics |
 | `calccode/ode_systems.py` | ODE systems | Nonlinear pendulum, Lotka-Volterra, Lorenz attractor on RK4 |
-| `calccode/fourier.py` | Fourier analysis | Hand-written O(n^2) DFT, inverse, dominant frequency detection |
-| `calccode/montecarlo.py` | Monte Carlo | Xorshift RNG, 1D and n-D integration, pi estimation, importance sampling |
+| `calccode/fourier.py` | Fourier analysis | Hand-written O(n^2) DFT and radix-2 FFT, inverses, dominant frequency detection, timing comparison |
+| `calccode/montecarlo.py` | Monte Carlo | Xorshift RNG, RANDU weak LCG for the lattice demo, 1D and n-D integration, pi estimation, importance sampling |
 | `calccode/probability.py` | Probability | Box-Muller normals, PDFs and CDFs (normal CDF by Simpson), percentiles, CLT demo |
 | `calccode/interpolation.py` | Interpolation | Barycentric Lagrange, divided differences, cubic splines, Chebyshev nodes |
 | `calccode/eigen.py` | Eigenvalues | Power iteration, inverse iteration with shift, deflation |
@@ -96,6 +96,14 @@ Interpolating 1 / (1 + 25 x^2) on 15 equispaced nodes oscillates at the ends; th
 ![Optimizer paths on Rosenbrock](docs/img/optimizer_paths.png)
 
 Plain gradient descent, momentum, Adam, and BFGS on the Rosenbrock valley from (-1.2, 1). BFGS follows the valley floor in 35 steps while the first-order methods zigzag down it. From `calccode/optimize.py`.
+
+![DFT vs FFT wall time](docs/img/fft_vs_dft.png)
+
+Wall time of the direct DFT against the radix-2 FFT, sizes 64 to 2048. The DFT tracks its n^2 reference while the FFT stays on n log n, about 250 times faster at n = 2048. From `calccode/fourier.py`.
+
+![RNG lattice](docs/img/rng_lattice.png)
+
+Consecutive triples from two generators, 30000 points each, same 3D view. Xorshift32 shows no planes at this size, so the lattice needs a weaker generator to become visible: RANDU, a deliberately bad LCG kept in the module for contrast, collapses onto 15 planes. From `calccode/montecarlo.py`.
 
 ## Quickstart
 

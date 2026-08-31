@@ -45,7 +45,8 @@ A checklist mapping standard Calculus I, II, and III topics to the code, notes, 
 | Robotics transforms | `calccode/transforms.py` | `notes/10-transforms.md` | `exercises/ex_transforms.py` |
 | Robot kinematics (screw theory) | `calccode/kinematics.py` | `notes/24-modern-robotics.md` | none yet |
 | Robot dynamics (2-link Lagrangian) | `calccode/dynamics.py` | `notes/26-dynamics.md` | none yet |
-| Fourier analysis | `calccode/fourier.py` | `notes/15-fourier.md` | `exercises/ex_fourier.py` |
+| Fourier analysis | `calccode/fourier.py` | `notes/15-fourier.md`, `notes/31-fft.md` | `exercises/ex_fourier.py` |
+| ODE solvers (adaptive and stiff) | `calccode/integrators.py` | `notes/04-integrators.md`, `notes/32-stiff-odes.md` | none yet |
 | Monte Carlo | `calccode/montecarlo.py` | `notes/16-monte-carlo.md` | `exercises/ex_montecarlo.py` |
 | Probability and statistics | `calccode/probability.py` | `notes/23-probability.md` | none yet |
 | Classical machine learning | `calccode/ml.py`, `calccode/regression.py` (ridge) | `notes/25-classical-ml.md` | none yet |
@@ -62,5 +63,5 @@ Honest gaps, in the order I would tackle them:
 - Improper integrals past the one example in `integrals.py`. The 1/sqrt(x) demo shows a substitution removing a singularity, but there is no general machinery for infinite bounds or singular endpoints.
 - Related rates past one unknown. `related_rates.py` solves for a single rate per call and cannot set up the relation itself.
 - Sequences and series past the convergence tests in `convergence.py`: no root test or power series radius work.
-- Differential equations past RK4: no stiff solvers, no boundary value problems.
+- Differential equations past adaptive RK45 and backward Euler: no multistep stiff solvers (BDF), no boundary value problems.
 - Probability past the basics in `probability.py`: the normal CDF integrates the density per call instead of using an erf approximation, and there is no regression-style inference (no confidence intervals, no hypothesis tests).
