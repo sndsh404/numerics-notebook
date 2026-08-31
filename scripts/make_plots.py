@@ -25,6 +25,7 @@ from calccode.autograd import MLP, fit
 from calccode.derivatives import convergence_study
 from calccode.gradient import gradient_descent
 from calccode.integrators import euler, oscillator_energy, rk4, semi_implicit_euler
+from calccode.optimize import adam, bfgs, momentum_gd
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIRS = [os.path.join(ROOT, "plots"), os.path.join(ROOT, "docs", "img")]
@@ -112,6 +113,33 @@ def plot_gradient_descent() -> None:
     save(fig, "gradient_descent.png")
 
 
+def plot_optimizer_paths() -> None:
+    rosen = lambda v: (1.0 - v[0]) ** 2 + 100.0 * (v[1] - v[0] ** 2) ** 2
+    start = np.array([-1.2, 1.0])
+    paths = [
+        ("plain GD", gradient_descent(rosen, start, 0.001, 12000)),
+        ("momentum", momentum_gd(rosen, start, lr=0.001, tol=0.0, max_iter=1200).history),
+        ("Adam", adam(rosen, start, lr=0.1, tol=0.0, max_iter=1200).history),
+        ("BFGS", bfgs(rosen, start).history),
+    ]
+
+    gx = np.linspace(-1.5, 1.6, 160)
+    gy = np.linspace(-0.6, 1.8, 160)
+    xx, yy = np.meshgrid(gx, gy)
+    zz = (1.0 - xx) ** 2 + 100.0 * (yy - xx**2) ** 2
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.contour(xx, yy, zz, levels=np.logspace(-1, 3.3, 20), cmap="viridis")
+    for label, path in paths:
+        ax.plot(path[:, 0], path[:, 1], ".-", markersize=2, lw=0.8, label=f"{label} ({len(path) - 1} steps)")
+    ax.plot(1.0, 1.0, "r*", markersize=14, label="minimum (1, 1)")
+    ax.plot(start[0], start[1], "ko", markersize=6)
+    ax.set_title("Optimizer paths on the Rosenbrock valley")
+    ax.legend()
+    fig.tight_layout()
+    save(fig, "optimizer_paths.png")
+
+
 def plot_autograd_fit() -> None:
     xs = np.linspace(-math.pi, math.pi, 32)
     ys = np.sin(xs)
@@ -147,6 +175,8 @@ def main() -> None:
     print("wrote integrators.png")
     plot_gradient_descent()
     print("wrote gradient_descent.png")
+    plot_optimizer_paths()
+    print("wrote optimizer_paths.png")
     plot_autograd_fit()
     print("wrote autograd_fit.png")
 

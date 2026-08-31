@@ -13,7 +13,7 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | Chain rule | `calccode/symbolic.py` | `notes/03-symbolic.md` | none yet |
 | Implicit differentiation | `calccode/symbolic.py` (`implicit_diff`, formula level: -Fx/Fy) | `notes/19-symbolic-integration.md` | none yet |
 | Related rates | `calccode/related_rates.py` | `notes/21-related-rates.md` | none yet |
-| Optimization (critical points) | `calccode/optimize.py`, `calccode/gradient.py` | `notes/12-optimize.md`, `notes/05-gradient-descent.md` | `exercises/ex_optimize.py` |
+| Optimization (critical points) | `calccode/optimize.py`, `calccode/gradient.py` | `notes/12-optimize.md`, `notes/05-gradient-descent.md`, `notes/29-minimization.md` | `exercises/ex_optimize.py` |
 | L'Hopital's rule | `calccode/limits.py` (numeric check of 0/0 forms) | `notes/01-limits.md` | `exercises/ex_limits.py` |
 | Riemann sums | `calccode/integrals.py` | `notes/07-integrals.md` | `exercises/ex_integrals.py` |
 | Fundamental theorem of calculus | `calccode/integrals.py` with `calccode/derivatives.py`; `calccode/symbolic_integrate.py` (FTC part 2 on antiderivative trees) | `notes/07-integrals.md`, `notes/19-symbolic-integration.md` | `exercises/ex_integrals.py` |

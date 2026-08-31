@@ -26,7 +26,7 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/series.py` | Series | Taylor polynomials, partial sums, numeric ratio test |
 | `calccode/convergence.py` | Series convergence | Alternating error bound, integral test, comparison test, p-series verdict |
 | `calccode/integrators.py` | ODEs | Explicit Euler, semi-implicit Euler, RK4 |
-| `calccode/optimize.py` | Root finding | Bisection, Newton, secant, with iteration histories |
+| `calccode/optimize.py` | Root finding and minimization | Bisection, Newton, secant; golden section, Armijo line search, Newton and BFGS minimizers, momentum, Nesterov, Adam |
 | `calccode/multivar.py` | Multivariable calculus | Partials, gradient, Jacobian, Hessian, gradient checking |
 | `calccode/gradient.py` | Gradient descent | 1D and 2D descent on central differences, learning rate study |
 | `calccode/autograd.py` | Autodiff | Scalar reverse-mode autograd, MLP that fits sin(x) |
@@ -91,6 +91,10 @@ Forward kinematics of a 2-link planar arm at three joint configurations.
 ![Runge phenomenon](docs/img/runge_phenomenon.png)
 
 Interpolating 1 / (1 + 25 x^2) on 15 equispaced nodes oscillates at the ends; the same degree on Chebyshev nodes tracks the function.
+
+![Optimizer paths on Rosenbrock](docs/img/optimizer_paths.png)
+
+Plain gradient descent, momentum, Adam, and BFGS on the Rosenbrock valley from (-1.2, 1). BFGS follows the valley floor in 35 steps while the first-order methods zigzag down it. From `calccode/optimize.py`.
 
 ## Quickstart
 
