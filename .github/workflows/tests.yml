@@ -21,6 +21,18 @@ jobs:
       - name: Run tests
         run: python -m pytest tests/ -q --cov=calccode --cov-fail-under=90
 
+  oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run oracle tests against numpy and scipy
+        run: python -m pytest tests/test_oracle.py -q
+
   lint:
     runs-on: ubuntu-latest
     steps:
