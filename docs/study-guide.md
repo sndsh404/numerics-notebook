@@ -40,6 +40,7 @@ A checklist mapping standard Calculus I and II topics to the code, notes, and ex
 | Classical machine learning | `calccode/ml.py`, `calccode/regression.py` (ridge) | `notes/25-classical-ml.md` | none yet |
 | Interpolation | `calccode/interpolation.py` | `notes/17-interpolation.md` | `exercises/ex_interpolation.py` |
 | Eigenvalues | `calccode/eigen.py` | `notes/18-eigen.md` | `exercises/ex_eigen.py` |
+| Orthogonalization and SVD | `calccode/orthogonal.py` | `notes/28-orthogonalization.md` | none yet |
 
 ## Not covered yet
 

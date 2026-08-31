@@ -42,6 +42,7 @@ A study repository that implements calculus, linear algebra, rigid body transfor
 | `calccode/probability.py` | Probability | Box-Muller normals, PDFs and CDFs (normal CDF by Simpson), percentiles, CLT demo |
 | `calccode/interpolation.py` | Interpolation | Barycentric Lagrange, divided differences, cubic splines, Chebyshev nodes |
 | `calccode/eigen.py` | Eigenvalues | Power iteration, inverse iteration with shift, deflation |
+| `calccode/orthogonal.py` | Orthogonalization | Gram-Schmidt both ways, Householder QR, Jacobi SVD, pseudoinverse, least squares |
 
 Each module has a matching file in `notes/` with study notes on what the code shows and where it breaks. [docs/modules.md](docs/modules.md) maps every module to its note, test file, and exercise. For a topic-by-topic checklist against a Calculus I/II syllabus, see [docs/study-guide.md](docs/study-guide.md).
 

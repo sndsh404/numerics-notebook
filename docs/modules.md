@@ -30,3 +30,4 @@ One line per module: what it implements, and links to the matching note, test fi
 | `calccode/probability.py` | Box-Muller normals, PDFs and CDFs, percentiles, CLT demo | [23](../notes/23-probability.md) | [test_probability.py](../tests/test_probability.py) | none |
 | `calccode/interpolation.py` | Barycentric Lagrange, divided differences, cubic splines, Chebyshev nodes | [17](../notes/17-interpolation.md) | [test_interpolation.py](../tests/test_interpolation.py) | [ex_interpolation.py](../exercises/ex_interpolation.py) |
 | `calccode/eigen.py` | Power iteration, inverse iteration with shift, deflation | [18](../notes/18-eigen.md) | [test_eigen.py](../tests/test_eigen.py) | [ex_eigen.py](../exercises/ex_eigen.py) |
+| `calccode/orthogonal.py` | Gram-Schmidt both ways, Householder QR, Jacobi SVD, pseudoinverse, rank, low-rank approximation, least squares | [28](../notes/28-orthogonalization.md) | [test_orthogonal.py](../tests/test_orthogonal.py) | none |
