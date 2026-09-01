@@ -1,0 +1,56 @@
+site_name: numerics-notebook
+site_description: "From-scratch math in Python: calculus, linear algebra, robotics, and machine learning."
+repo_url: https://github.com/sndsh404/numerics-notebook
+
+docs_dir: site_src
+site_dir: site
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Notes:
+      - notes/01-limits.md
+      - notes/02-derivatives.md
+      - notes/03-symbolic.md
+      - notes/04-integrators.md
+      - notes/05-gradient-descent.md
+      - notes/06-autograd.md
+      - notes/07-integrals.md
+      - notes/08-series.md
+      - notes/09-linalg.md
+      - notes/10-transforms.md
+      - notes/11-regression.md
+      - notes/12-optimize.md
+      - notes/13-multivariable.md
+      - notes/14-ode-systems.md
+      - notes/15-fourier.md
+      - notes/16-monte-carlo.md
+      - notes/17-interpolation.md
+      - notes/18-eigen.md
+      - notes/19-symbolic-integration.md
+      - notes/20-applications.md
+      - notes/21-related-rates.md
+      - notes/22-series-convergence.md
+      - notes/23-probability.md
+      - notes/24-modern-robotics.md
+      - notes/25-classical-ml.md
+      - notes/26-dynamics.md
+      - notes/27-polar-parametric-arc-length.md
+      - notes/28-orthogonalization.md
+      - notes/29-minimization.md
+      - notes/30-vector-calculus.md
+      - notes/31-fft.md
+      - notes/32-stiff-odes.md
+  - Study guide: docs/study-guide.md
+  - Module map: docs/modules.md
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

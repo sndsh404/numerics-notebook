@@ -1,2 +1,4 @@
 -r requirements.txt
 scipy>=1.11
+mkdocs-material
+pymdown-extensions

@@ -4,3 +4,5 @@ __pycache__/
 .venv/
 plots/
 .coverage
+site/
+site_src/
